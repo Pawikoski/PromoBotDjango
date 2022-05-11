@@ -9,8 +9,8 @@
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
 </head>
-<body>
-  <nav class="navbar" role="navigation" aria-label="main navigation">
+<body class="is-dark has-background-dark is-fullheight-with-navbar" style="min-height: 100vh; ">
+  <nav class="navbar has-background-black-ter is-dark" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <a class="navbar-item" href="https://bulma.io">
         <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
@@ -45,10 +45,11 @@
             <a class="navbar-item">
               Kontakt
             </a>
-            <hr class="navbar-divider">
             <a class="navbar-item">
               Zgłoś błąd
             </a>
+            <hr class="navbar-divider">
+            <a class="navbar-item dark-mode-button"> Tryb ciemny</a>
           </div>
         </div>
       </div>
@@ -56,19 +57,33 @@
       <div class="navbar-end">
         <div class="navbar-item">
           <div class="buttons">
-            <a href="/rejestracja" class="button is-primary">
-              <strong>Rejestracja</strong>
-            </a>
-            <a href="/logowanie" class="button is-light">
-              Logowanie
-            </a>
+
+            {% if user.is_authenticated %}
+              <div class="has-dropdown is-hoverable navbar-item">
+                <a href="" class="button is-primary navbar-link">Moje konto</a>
+              <div class="navbar-dropdown">
+                <a href="{% url 'logout' %}" class="navbar-item">
+                  Wyloguj
+                </a>
+              </div>
+              </div>
+
+            {% else %}
+              <a href="{% url 'register' %}" class="button is-primary">
+                <strong>Rejestracja</strong>
+              </a>
+              <a href="{% url 'login' %}" class="button is-light">
+                Logowanie
+              </a>
+            {% endif %} 
+
           </div>
         </div>
       </div>
     </div>
   </nav>
 
-  <div class="container">
+  <div class="container mt-5 is-dark">
     {% block content %}
 
     {% endblock %}
