@@ -1,0 +1,40 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+
+
+  <form method="POST" class="box">
+    <h1>Rejestracja</h1>
+  {% csrf_token %}
+    <div class="is-danger">{{ register_form.non_field_errors }}</div>
+
+
+  <div class="field">
+    <div class="is-danger">{{ register_form.username.errors }}</div>
+    <label class="label" for="{{ register_form.username.id_for_label }}">Nazwa użytkownika</label>
+    <div class="control">
+      {{ register_form.username }}
+    </div>
+  </div>
+
+  <div class="field">
+    <div class="is-danger">{{ register_form.email.errors }}</div>
+    <label class="label" for="{{ register_form.email.id_for_label }}">Adres e-mail</label>
+    <div class="control">
+      {{ register_form.email }}
+    </div>
+  </div>
+
+  <div class="field is-grouped">
+  <div class="control">
+    <input type="submit" class="button is-link" value="Zarejestruj">
+  </div>
+  <div class="control">
+    <a href="{% url 'homepage' %}" class="button is-link is-light">Cancel</a>
+  </div>
+</div>
+
+  </form>
+
+
+{% endblock %}
