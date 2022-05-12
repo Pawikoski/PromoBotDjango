@@ -1,0 +1,74 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+  <script>
+    window.onload = function() {
+    const nav_tabs = document.querySelectorAll("div.tabs > ul > li");
+    const tabs = document.querySelectorAll("div.tab");
+
+    nav_tabs.forEach((nav_tab) => {
+        nav_tab.addEventListener("click", () => {
+          document.querySelector(".is-active").classList.remove("is-active");
+          nav_tab.classList.add("is-active");
+
+          switch (nav_tab.id) {
+              case "my-products":
+                  tabs.forEach((tab) => {
+                      if (!tab.classList.contains("is-hidden")) {
+                          tab.classList.add("is-hidden");
+                      }
+                  })
+                  document.querySelector("div.tab.my-products").classList.remove("is-hidden");
+                  break;
+              case "download-files":
+                  tabs.forEach((tab) => {
+                      if (!tab.classList.contains("is-hidden")) {
+                          tab.classList.add("is-hidden");
+                      }
+                  })
+                  document.querySelector("div.tab.download-files").classList.remove("is-hidden");
+                  break;
+              case "settings":
+                  tabs.forEach((tab) => {
+                      if (!tab.classList.contains("is-hidden")) {
+                          tab.classList.add("is-hidden");
+                      }
+                  })
+                  document.querySelector("div.tab.settings").classList.remove("is-hidden");
+                  break;
+
+          }
+      })
+    })
+  }
+  </script>
+
+  <h1 class="title">Moje konto</h1>
+
+  <div class="tabs">
+    <ul>
+      <li id="my-products" class="is-active"><a>Moje produkty</a></li>
+      <li id="download-files"><a>Pobierz pliki</a></li>
+      <li id="settings"><a>Ustawienia</a></li>
+    </ul>
+  </div>
+
+  <div class="tab my-products">
+    produkty
+  </div>
+
+  <div class="tab download-files is-hidden">
+    pobierz
+  </div>
+
+  <div class="tab settings is-hidden">
+    Telegram user id: <input type="text"><br>
+    Telegram api key: <input type="text"><br>
+    <hr>
+    E-mail
+    nr telefonu
+    
+
+  </div>
+
+{% endblock %}

@@ -52,3 +52,5 @@ class AuthenticationForm(AuthenticationForm):
             'class': 'input',
             "placeholder": "Hasło"
         })
+
+

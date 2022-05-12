@@ -1,0 +1,31 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+    <div class="is-flex is-justify-content-space-between">
+      <h1 class="title">Obsługiwane sklepy</h1>
+      <div class="field is-grouped">
+        <div class="control">
+          <input class="input" type="text" placeholder="Szukaj...">
+        </div>
+        <div class="control">
+          <button class="input">Szukaj</button>
+        </div>
+    </div>
+    </div>
+
+
+    <div class="content">
+      <div class="tile is-ancestor">
+        <div class="tile is-4 is-parent">
+          <div class="tile is-child box">
+            <p class="title">Sklep nr 1</p>
+            <p>photo</p>
+          </div>
+          <div class="tile is-child box">
+            <p class="title">Two</p>
+            <p>photo</p>
+          </div>
+        </div>
+      </div>
+    </div>
+{% endblock %}

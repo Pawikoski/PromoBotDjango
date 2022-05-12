@@ -1,0 +1,212 @@
+{% extends 'app/base.html' %}
+
+{% block title %}
+  Dodaj
+{% endblock %}
+
+{% block content %}
+  <script>
+    window.onload = function() {
+    const nav_tabs = [document.querySelector("li#new"), document.querySelector("li#single-url"), document.querySelector("li#urls-from-file")];
+    const tabs = document.querySelectorAll("div.tab");
+
+    nav_tabs.forEach((nav_tab) => {
+        nav_tab.addEventListener("click", () => {
+          document.querySelector(".is-active").classList.remove("is-active");
+          nav_tab.classList.add("is-active");
+
+          switch (nav_tab.id) {
+              case "new":
+                  tabs.forEach((tab) => {
+                      if (!tab.classList.contains("is-hidden")) {
+                          tab.classList.add("is-hidden");
+                      }
+                  })
+                  document.querySelector("div.tab.new").classList.remove("is-hidden");
+                  break;
+              case "single-url":
+                  tabs.forEach((tab) => {
+                      if (!tab.classList.contains("is-hidden")) {
+                          tab.classList.add("is-hidden");
+                      }
+                  })
+                  document.querySelector("div.tab.single-url").classList.remove("is-hidden");
+                  break;
+              case "urls-from-file":
+                  tabs.forEach((tab) => {
+                      if (!tab.classList.contains("is-hidden")) {
+                          tab.classList.add("is-hidden");
+                      }
+                  })
+                  document.querySelector("div.tab.urls-from-file").classList.remove("is-hidden");
+                  break;
+
+          }
+      })
+    })
+  }
+  </script>
+
+  <h1 class="title">Dodaj produkty i adresy</h1>
+
+  <div class="tabs">
+    <ul><strong>Dodaj:</strong>
+      <li id="new" class="is-active"><a>Nowy produkt</a></li>
+      <li id="single-url"><a>Link dla istniejącego produktu</a></li>
+      <li id="urls-from-file"><a>Linki z pliku dla istniejącego produktu</a></li>
+    </ul>
+  </div>
+
+  <div class="block">
+
+    <div class="tab new">
+      <h1 class="title is-4">Nowy produkt</h1>
+
+      <form method="POST">
+        {% csrf_token %}
+        <div class="field has-addons">
+          <p class="control is-one-third">
+            <span class="select">
+              <select name="category" required>
+                <option disabled selected value>-- Wybierz kategorię --</option>
+                <option value="kategoria1">Kategoria 1</option>
+                <option value="kategoria2">Kategoria 2</option>
+              </select>
+            </span>
+          </p>
+          <p class="control is-expanded">
+            <input required name="product_name" class="input" type="text" placeholder="Nazwa produktu">
+          </p>
+        </div>
+        <p class="help">Brak kategorii? Dodaj ją w <a href="{% url 'user_page' %}">Moje konto</a></p>
+
+        <hr>
+
+        <h1 class="title is-4">Ustawienia produktu</h1>
+
+        <div class="box">
+          <h4 class="subtitle is-4">Pożądana cena</h4>
+
+          <label for="" class="label">Cena</label>
+          <div class="field">
+            <div class="control">
+              <input required class="input" type="number" placeholder="Cena w PLN" step="1">
+            </div>
+          </div>
+
+          <label for="" class="label">Akceptowalne odstępstwo od pożądanej ceny</label>
+          <p class="help">Przykład: gdy pożądna cena to 100zł, a odstępstwo wynosi 10%, dostaniesz powiadomienie gdy produkt osiągnie cenę 110zł</p>
+          <div class="field">
+            <div class="control">
+              <input class="input" type="number" placeholder="Wartość w %" step="1" min="0" max="20">
+            </div>
+          </div>
+
+          <label class="label">Gdzie chcesz otrzymywać powiadomienia:</label>
+          <div class="field is-grouped">
+            <div class="control">
+              <label class="checkbox">
+                <input name="main_notify_telegram" type="checkbox" checked>
+                  Telegram
+              </label>
+            </div>
+            <div class="control">
+              <label class="checkbox">
+                <input name="main_notify_email" type="checkbox">
+                  E-mail
+              </label>
+            </div>
+            <div class="control">
+              <label class="checkbox">
+                <input name="main_notify_sms" type="checkbox" disabled>
+                  SMS (Wymaga konta premium)
+              </label>
+            </div>
+            <div class="control">
+              <label class="checkbox">
+                <input name="main_notify_call" type="checkbox" disabled>
+                  Połączenie telefoniczne (Wymaga konta premium)
+              </label>
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="box">
+          <h4 class="subtitle is-4">Powiadomienie o najniższych znalezionych cenach</h4>
+
+          <label class="label">Wysyłaj powiadomienie co każde:</label>
+          <div class="field is-grouped">
+            <div class="control">
+              <input name="l_price_notify_value" class="input" type="number" placeholder="Liczba godzin lub minut" value="24" step="1">
+            </div>
+            <div class="control">
+              <div class="select">
+                <select name="l_price_notify_time_unit">
+                  <option value="h">Godziny</option>
+                  <option value="m">Minuty</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <label class="label">Gdzie chcesz otrzymywać powiadomienia:</label>
+          <div class="field is-grouped">
+            <div class="control">
+              <label class="checkbox">
+                <input name="l_price_notify_telegram" type="checkbox" checked>
+                  Telegram
+              </label>
+            </div>
+            <div class="control">
+              <label class="checkbox">
+                <input name="l_price_notify_email" type="checkbox">
+                  E-mail
+              </label>
+            </div>
+            <div class="control">
+              <label class="checkbox">
+                <input name="l_price_notify_sms" type="checkbox" disabled>
+                  SMS (Wymaga konta premium)
+              </label>
+            </div>
+          </div>
+
+        </div>
+        <div class="has-text-centered">
+          <button class="button is-primary is-fullwidth">Dodaj produkt</button>
+        </div>
+        
+      </form>
+    </div>
+
+    <div class="tab single-url is-hidden">
+      <div class="field has-addons">
+        <p class="control is-one-third">
+          <span class="select">
+            <select>
+              <option disabled selected>Wybierz produkt</option>
+              <option>produkt2</option>
+              <option>produkt3</option>
+            </select>
+          </span>
+        </p>
+        <p class="control is-expanded">
+          <input class="input" type="text" placeholder="Tutaj wklej adres sklepu z twoim produktem">
+        </p>
+        <p class="control">
+          <a class="button is-primary">
+            Dodaj adres
+          </a>
+        </p>
+      </div>
+    </div>
+
+    <div class="tab urls-from-file is-hidden">
+      urls from file
+    </div>
+    
+  </div>
+
+{% endblock %}
