@@ -60,14 +60,13 @@ def user_page(request):
         if 'form-name' not in request.POST.keys():
             return render(request, "app/add_products.html", {"errors": "Wystąpił niespodziewany błąd"})
        
-        match request.POST['form-name']:
-            case 'add-category':
-                category_name = request.POST['category-name']
-                if Category.objects.filter(category=category_name, user=request.user):
-                    return render(request, 'app/account.html', {"errors": "Kategoria o wybranej nazwie już istnieje"})
-                
-                new_category = Category(category=category_name, user=request.user)
-                new_category.save()
+        if request.POST['form-name'] == 'add-category':
+            category_name = request.POST['category-name']
+            if Category.objects.filter(category=category_name, user=request.user):
+                return render(request, 'app/account.html', {"errors": "Kategoria o wybranej nazwie już istnieje"})
+            
+            new_category = Category(category=category_name, user=request.user)
+            new_category.save()
         
     return render(request, 'app/account.html')
 
@@ -89,21 +88,20 @@ def add_products(request):
         if 'form-name' not in data.keys():
             return render(request, "app/add_products.html", {"errors": "Wystąpił niespodziewany błąd"})
         
-        match request.POST['form-name']:
-            case 'add-product':
-                category = data['category']
-                product_name = data['product-name']
+        if request.POST['form-name'] == 'add-product':
+            category = data['category']
+            product_name = data['product-name']
+            
+            try:
+                wanted_price = int(data['wanted-price'])
+                wanted_price_tolerancy = int(data['wanted-price-tolerancy'])
                 
-                try:
-                    wanted_price = int(data['wanted-price'])
-                    wanted_price_tolerancy = int(data['wanted-price-tolerancy'])
-                    
-                    if wanted_price < 1 or wanted_price_tolerancy < 0 or wanted_price_tolerancy > 20:
-                        raise ValueError
-                except ValueError:
-                    return render(request, 'app/add_products.html', context = {"available_categories": categories, "errors": ["Błąd. Sprawdź dane i spróbuj ponownie"]})
-                
-                main_notification_choices = data.getlist('main-notify')
+                if wanted_price < 1 or wanted_price_tolerancy < 0 or wanted_price_tolerancy > 20:
+                    raise ValueError
+            except ValueError:
+                return render(request, 'app/add_products.html', context = {"available_categories": categories, "errors": ["Błąd. Sprawdź dane i spróbuj ponownie"]})
+            
+            main_notification_choices = data.getlist('main-notify')
                 
                 
         
