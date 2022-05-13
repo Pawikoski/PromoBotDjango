@@ -71,13 +71,15 @@
             <span class="select">
               <select name="category" required>
                 <option disabled selected value>-- Wybierz kategorię --</option>
-                <option value="kategoria1">Kategoria 1</option>
-                <option value="kategoria2">Kategoria 2</option>
+                {% for category in available_categories %}
+                  <option value="{{ category.category_name }}">{{ category.category_name }}</option>
+                {% endfor %}
+              
               </select>
             </span>
           </p>
           <p class="control is-expanded">
-            <input required name="product_name" class="input" type="text" placeholder="Nazwa produktu" maxlength="60">
+            <input required name="product-name" class="input" type="text" placeholder="Nazwa produktu" maxlength="60">
           </p>
         </div>
         <p class="help">Brak kategorii? Dodaj ją w <a href="{% url 'user_page' %}">Moje konto</a></p>
@@ -92,7 +94,7 @@
           <label for="" class="label">Cena</label>
           <div class="field">
             <div class="control">
-              <input required class="input" type="number" placeholder="Cena w PLN" step="1">
+              <input required name="wanted-price" class="input" type="number" placeholder="Cena w PLN" step="1">
             </div>
           </div>
 
@@ -100,7 +102,7 @@
           <p class="help">Przykład: gdy pożądna cena to 100zł, a odstępstwo wynosi 10%, dostaniesz powiadomienie gdy produkt osiągnie cenę 110zł</p>
           <div class="field">
             <div class="control">
-              <input class="input" type="number" placeholder="Wartość w %" step="1" min="0" max="20">
+              <input class="input" name="wanted-price-tolerancy" type="number" placeholder="Wartość w %" step="1" min="0" max="20">
             </div>
           </div>
 
@@ -108,25 +110,25 @@
           <div class="field is-grouped">
             <div class="control">
               <label class="checkbox">
-                <input name="main_notify_telegram" type="checkbox" checked>
+                <input name="main-notify" value="telegram" type="checkbox" checked>
                   Telegram
               </label>
             </div>
             <div class="control">
               <label class="checkbox">
-                <input name="main_notify_email" type="checkbox">
+                <input name="main-notify" value="email" type="checkbox">
                   E-mail
               </label>
             </div>
             <div class="control">
               <label class="checkbox">
-                <input name="main_notify_sms" type="checkbox" disabled>
+                <input name="main-notify" value="sms" type="checkbox" disabled>
                   SMS (Wymaga konta premium)
               </label>
             </div>
             <div class="control">
               <label class="checkbox">
-                <input name="main_notify_call" type="checkbox" disabled>
+                <input name="main-notify" value="call" type="checkbox" disabled>
                   Połączenie telefoniczne (Wymaga konta premium)
               </label>
             </div>

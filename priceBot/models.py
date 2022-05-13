@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 # Create your models here.
 class Category(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    cateogry = models.CharField(max_length=60)
+    category_name = models.CharField(max_length=60)
     
     
 class Product(models.Model):

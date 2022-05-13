@@ -54,7 +54,24 @@
   </div>
 
   <div class="tab my-products">
-    produkty
+    produkty <br>
+
+    kategoerie <br><br>
+
+    dodaj kategorie:
+    <form method="POST">
+      {% csrf_token %}
+      <input type="hidden" name="form-name" value="add-category">
+      <div class="field has-addons">
+
+        <p class="control">
+          <input required name="category-name" class="input" type="text" placeholder="Nazwa kategorii" maxlength="60">
+        </p>
+        <p class="control">
+          <input type="submit" class="input" value="Dodaj">
+        </p>
+      </div>
+    </form>
   </div>
 
   <div class="tab download-files is-hidden">

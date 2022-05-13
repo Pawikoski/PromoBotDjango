@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
 from .forms import NewUserForm, AuthenticationForm
 from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.models import User
 from django.contrib import messages
+from .models import Product, Category, ProductUrls
 
 
 # Create your views here.
@@ -51,6 +53,22 @@ def logout_request(request):
 
 
 def user_page(request):
+    if not request.user.is_authenticated:
+        return redirect("homepage")
+    
+    if request.method == "POST":
+        if 'form-name' not in request.POST.keys():
+            return render(request, "app/add_products.html", {"errors": "Wystąpił niespodziewany błąd"})
+       
+        match request.POST['form-name']:
+            case 'add-category':
+                category_name = request.POST['category-name']
+                if Category.objects.filter(category=category_name, user=request.user):
+                    return render(request, 'app/account.html', {"errors": "Kategoria o wybranej nazwie już istnieje"})
+                
+                new_category = Category(category=category_name, user=request.user)
+                new_category.save()
+        
     return render(request, 'app/account.html')
 
 
@@ -58,18 +76,38 @@ def add_products(request):
     if not request.user.is_authenticated:
         return redirect('homepage')
     
+    categories = Category.objects.filter(user=request.user)
+    print(categories)
+    context = {
+        "available_categories": categories,
+    }
+    
+    
     if request.method == "POST":
-        print(request.POST)
-        if 'form-name' not in request.POST.keys():
+        data = request.POST
+        
+        if 'form-name' not in data.keys():
             return render(request, "app/add_products.html", {"errors": "Wystąpił niespodziewany błąd"})
         
         match request.POST['form-name']:
             case 'add-product':
-                # TODO: handle product adding
-                pass
+                category = data['category']
+                product_name = data['product-name']
+                
+                try:
+                    wanted_price = int(data['wanted-price'])
+                    wanted_price_tolerancy = int(data['wanted-price-tolerancy'])
+                    
+                    if wanted_price < 1 or wanted_price_tolerancy < 0 or wanted_price_tolerancy > 20:
+                        raise ValueError
+                except ValueError:
+                    return render(request, 'app/add_products.html', context = {"available_categories": categories, "errors": ["Błąd. Sprawdź dane i spróbuj ponownie"]})
+                
+                main_notification_choices = data.getlist('main-notify')
+                
+                
         
-        
-    return render(request, 'app/add_products.html')
+    return render(request, 'app/add_products.html', context=context)
     
 
 
