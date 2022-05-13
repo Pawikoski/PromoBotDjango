@@ -1,0 +1,74 @@
+{% extends 'account/base.html' %}
+
+{% block title %}
+    Kategorie
+{% endblock title %}
+{% block title2 %}
+    <h1 class="title">Kategorie</h1>
+{% endblock title2 %}
+
+
+{% block main-column %}
+<script>
+    window.onload = function () {
+        const add_category_form = document.querySelector("div.add-category-form");
+        const table = document.querySelector("table.categories");
+        
+        const add_category_btn = document.querySelector("a.add-category");
+
+        add_category_btn.addEventListener('click', () => {
+            if (add_category_form.classList.contains("is-hidden")) {
+                add_category_form.classList.remove("is-hidden");
+                table.classList.add("is-hidden");
+                add_category_btn.textContent = "Pokaż wszystkie kategorie";
+                document.querySelector("h1.categories-title").textContent = "Edytuj kategorię";
+            } else {
+                add_category_form.classList.add("is-hidden");
+                table.classList.remove("is-hidden");
+                add_category_btn.textContent = "+ Dodaj kategorię";
+                document.querySelector("h1.categories-title").textContent = "Wszystkie kategorie";
+            }
+        });
+
+    }
+</script>
+
+<div class="is-flex is-justify-content-space-between">
+    <h1 class="subtitle categories-title">Wszystkie kategorie</h1>
+    <a class="add-category">+ Dodaj kategorię</a>
+</div>
+
+<div class="add-category-form is-hidden">
+    <form method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="form-name" value="add-category">
+        <div class="field has-addons">
+
+            <p class="control">
+            <input required name="category-name" class="input" type="text" placeholder="Nazwa kategorii" maxlength="60">
+            </p>
+            <p class="control">
+            <input type="submit" class="input" value="Dodaj">
+            </p>
+        </div>
+    </form>
+</div>
+
+  <table class="table is-bordered categories">
+    <tbody>
+      <thead>
+        <th>Nazwa kategorii</th>
+        <th>Liczba produktów</th>
+        <th>Edytuj</th>
+      </thead>
+      
+      {% for category in categories %}
+      <tr class="has-text-centered">
+        <th>{{ category.name }}</th>
+        <td>{{ category.products_count }}</td>
+        <td><a href="{% url 'category_edit' category.id %}">Edytuj</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+</table>
+{% endblock main-column %}

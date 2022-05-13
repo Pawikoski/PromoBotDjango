@@ -1,0 +1,43 @@
+{% extends 'account/base.html' %}
+
+{% block title %}
+    Produkty
+{% endblock title %}
+{% block title2 %}
+    <h1 class="title">Produkty</h1>
+{% endblock title2 %}
+
+
+{% block main-column %}
+<div class="tab my-products">
+    <div class="is-flex is-justify-content-space-between">
+        <h1 class="subtitle">Wszystkie produkty</h1>
+        <a href="{% url 'add_products' %}">+ Dodaj produkt</a>
+    </div>
+    
+      <table class="table is-bordered">
+        <tbody>
+          <thead>
+            <th>Nazwa produktu</th>
+            <th>Kategoria</th>
+            <th>Pożądana cena</th>
+            <th>Tolerancja ceny</th>
+            <th>Powiadomienia o najniższej cenie - czas</th>
+            <th>Edytuj</th>
+          </thead>
+          
+          {% for product in products %}
+          <tr class="has-text-centered">
+            <th>{{ product.product_name }}</th>
+            <td>{{ product.category.category_name }}</td>
+            <td>{{ product.wanted_price }} PLN</td>
+            <td>{{ product.wanted_price_tolerance }} %</td>
+            <td>{{ product.lowest_price_notification_time_value }} {{ product.lowest_price_notification_time_unit}}</td>
+            <td><a href="{% url 'product_edit' product.id %}">Edytuj</a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+    </table>
+  </div>
+    
+{% endblock main-column %}

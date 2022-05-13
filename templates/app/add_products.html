@@ -143,11 +143,11 @@
           <label class="label">Wysyłaj powiadomienie co każde:</label>
           <div class="field is-grouped">
             <div class="control">
-              <input name="l_price_notify_value" class="input" type="number" placeholder="Liczba godzin lub minut" value="24" step="1">
+              <input name="lowest-price-notification-time-value" class="input" type="number" placeholder="Liczba godzin lub minut" value="24" step="1">
             </div>
             <div class="control">
               <div class="select">
-                <select name="l_price_notify_time_unit">
+                <select name="lowest-price-notification-time-unit">
                   <option value="h">Godziny</option>
                   <option value="m">Minuty</option>
                 </select>
@@ -159,19 +159,19 @@
           <div class="field is-grouped">
             <div class="control">
               <label class="checkbox">
-                <input name="l_price_notify_telegram" type="checkbox" checked>
+                <input name="lowest_price_notifty" value="telegram" type="checkbox" checked>
                   Telegram
               </label>
             </div>
             <div class="control">
               <label class="checkbox">
-                <input name="l_price_notify_email" type="checkbox">
+                <input name="lowest_price_notifty" value="email" type="checkbox">
                   E-mail
               </label>
             </div>
             <div class="control">
               <label class="checkbox">
-                <input name="l_price_notify_sms" type="checkbox" disabled>
+                <input name="lowest_price_notifty" value="sms" type="checkbox" disabled>
                   SMS (Wymaga konta premium)
               </label>
             </div>
@@ -190,17 +190,28 @@
         <p class="control is-one-third">
           <span class="select">
             <select>
+              <option disabled selected>Wybierz kategorię</option>
+              {% for category in available_categories %}
+                <option value={{ category.category_name }}>{{ category.category_name }}</option>
+              {% endfor %}
+            </select>
+          </span>
+        </p>
+        <p class="control is-one-third">
+          <span class="select">
+            <select>
               <option disabled selected>Wybierz produkt</option>
               <option>produkt2</option>
               <option>produkt3</option>
             </select>
           </span>
         </p>
+
         <p class="control is-expanded">
           <input class="input" type="text" placeholder="Tutaj wklej adres sklepu z twoim produktem">
         </p>
         <p class="control">
-          <a class="button is-primary">
+          <a class="button is-primary add-url">
             Dodaj adres
           </a>
         </p>
