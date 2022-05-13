@@ -60,6 +60,14 @@ def add_products(request):
     
     if request.method == "POST":
         print(request.POST)
+        if 'form-name' not in request.POST.keys():
+            return render(request, "app/add_products.html", {"errors": "Wystąpił niespodziewany błąd"})
+        
+        match request.POST['form-name']:
+            case 'add-product':
+                # TODO: handle product adding
+                pass
+        
         
     return render(request, 'app/add_products.html')
     

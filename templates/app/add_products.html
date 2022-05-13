@@ -48,6 +48,7 @@
   </script>
 
   <h1 class="title">Dodaj produkty i adresy</h1>
+  {{errors}}
 
   <div class="tabs">
     <ul><strong>Dodaj:</strong>
@@ -64,6 +65,7 @@
 
       <form method="POST">
         {% csrf_token %}
+        <input type="hidden" name="form-name" value="add-product">
         <div class="field has-addons">
           <p class="control is-one-third">
             <span class="select">
@@ -75,7 +77,7 @@
             </span>
           </p>
           <p class="control is-expanded">
-            <input required name="product_name" class="input" type="text" placeholder="Nazwa produktu">
+            <input required name="product_name" class="input" type="text" placeholder="Nazwa produktu" maxlength="60">
           </p>
         </div>
         <p class="help">Brak kategorii? Dodaj ją w <a href="{% url 'user_page' %}">Moje konto</a></p>
@@ -84,7 +86,7 @@
 
         <h1 class="title is-4">Ustawienia produktu</h1>
 
-        <div class="box">
+        <div class="box has-background-white-ter">
           <h4 class="subtitle is-4">Pożądana cena</h4>
 
           <label for="" class="label">Cena</label>
@@ -133,7 +135,7 @@
 
         </div>
 
-        <div class="box">
+        <div class="box has-background-white-ter">
           <h4 class="subtitle is-4">Powiadomienie o najniższych znalezionych cenach</h4>
 
           <label class="label">Wysyłaj powiadomienie co każde:</label>
