@@ -9,12 +9,106 @@
 
 
 {% block main-column %}
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Functions to open and close a modal
+    function openModal(el, trigger) {
+      product_id = trigger.dataset.product_id
+      category = trigger.dataset.category
+      console.log(category)
+      product_name = trigger.dataset.product_name
+
+      el.querySelector("#category").textContent = category;
+      el.querySelector("#product").textContent = product_name;
+      el.classList.add('is-active');
+    }
+  
+    function closeModal($el) {
+      $el.classList.remove('is-active');
+    }
+  
+    function closeAllModals() {
+      (document.querySelectorAll('.modal') || []).forEach(($modal) => {
+        closeModal($modal);
+      });
+    }
+  
+    // Add a click event on buttons to open a specific modal
+    (document.querySelectorAll('.js-modal-trigger') || []).forEach(($trigger) => {
+      const modal = $trigger.dataset.target;
+      const $target = document.getElementById(modal);
+  
+      $trigger.addEventListener('click', () => {
+        openModal($target, $trigger);
+      });
+    });
+  
+    // Add a click event on various child elements to close the parent modal
+    (document.querySelectorAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button') || []).forEach(($close) => {
+      const $target = $close.closest('.modal');
+  
+      $close.addEventListener('click', () => {
+        closeModal($target);
+      });
+    });
+  
+    // Add a keyboard event to close all modals
+    document.addEventListener('keydown', (event) => {
+      const e = event || window.event;
+  
+      if (e.keyCode === 27) { // Escape key
+        closeAllModals();
+      }
+    });
+  });
+</script>
+
+
 <div class="tab my-products">
-    <div class="is-flex is-justify-content-space-between">
-        <h1 class="subtitle">Wszystkie produkty</h1>
-        <a href="{% url 'add_products' %}">+ Dodaj produkt</a>
+  <div class="is-flex is-justify-content-space-between">
+    <h1 class="subtitle">Wszystkie produkty</h1>
+    <a href="{% url 'add_products' %}">+ Dodaj produkt</a>
+  </div>
+
+  <div id="modal-js" class="modal">
+    <div class="modal-background"></div>
+    
+      <div class="modal-content" style="width:60%">
+        <div class="box">
+          <form method="POST">
+            <div class="field has-addons">
+              <p class="control is-one-third">
+                <span class="select">
+                  <select>
+                    <option id="category" disabled selected></option>
+                  </select>
+                </span>
+              </p>
+              <p class="control is-one-third">
+                <span class="select">
+                  <select>
+                    <option id="product" disabled selected></option>
+                  </select>
+                </span>
+              </p>
+      
+              <p class="control is-expanded">
+                <input class="input" type="text" placeholder="Tutaj wklej adres sklepu z twoim produktem">
+              </p>
+              <p class="control">
+                <a class="button is-primary add-url">
+                  Dodaj adres
+                </a>
+              </p>
+            </div>
+          </form>
+        </div>
+      </div>
+    
+      <button class="modal-close is-large" aria-label="close"></button>
     </div>
     
+
       <table class="table is-bordered is-fullwidth">
         <tbody>
           <thead>
@@ -32,7 +126,11 @@
           <tr class="has-text-centered">
             <th class="has-text-centered" title="Nazwa produktu">{{ product.product_name }}</th>
             <td class="has-text-centered" title="Kategoria">{{ product.category_name }}</td>
-            <td class="has-text-centered" title="Liczba linków">0 {# TODO: #}</td>
+            <td class="has-text-centered" title="Liczba linków">0 
+              <a class="js-modal-trigger" data-target="modal-js" data-product_id="{{ product.id }}" data-product_name="{{ product.product_name }}" data-category="{{ product.category_name }}">
+                <i class="fa-solid fa-circle-plus"></i>
+              </a>
+            </td>
             <td class="has-text-centered" title="Pożądana cena">{{ product.wanted_price }} PLN</td>
             <td class="has-text-centered" title="Akceptowalny odchył (%) od ceny pożądanej">{{ product.wanted_price_tolerance }} %</td>
             <td class="has-text-centered" title="Czas i media wysyłania powiadomień o najniższej cenie">
