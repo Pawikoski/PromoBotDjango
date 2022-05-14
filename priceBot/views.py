@@ -49,6 +49,8 @@ def login_request(request):
 
 
 def logout_request(request):
+    if not request.user.is_authenticated:
+        return redirect("homepage")
     logout(request)
     messages.info(request, "Zostałeś wylogowany")
     return redirect('homepage')
@@ -58,18 +60,7 @@ def user_page(request):
     if not request.user.is_authenticated:
         return redirect("homepage")
     
-    if request.method == "POST":
-        if 'form-name' not in request.POST.keys():
-            return render(request, "account/main.html", {"errors": "Wystąpił niespodziewany błąd"})
-       
-        match request.POST['form-name']:
-            case 'add-category':
-                category_name = request.POST['category-name']
-                if Category.objects.filter(category_name=category_name, user=request.user):
-                    return render(request, 'account/main.html', {"errors": "Kategoria o wybranej nazwie już istnieje"})
-                
-                new_category = Category(category_name=category_name, user=request.user)
-                new_category.save()
+
         
 
     return render(request, 'account/main.html')
@@ -110,7 +101,10 @@ def add_products(request):
                 
                 try:
                     wanted_price = int(data['wanted-price'])
-                    wanted_price_tolerancy = int(data['wanted-price-tolerancy'])
+                    if (data['wanted-price-tolerancy']):
+                        wanted_price_tolerancy = int(data['wanted-price-tolerancy'])
+                    else:
+                        wanted_price_tolerancy = 0
                     
                     lowest_price_notification_time_value = int(data['lowest-price-notification-time-value'])
                     lowest_price_notification_time_unit = data['lowest-price-notification-time-unit']
@@ -121,7 +115,6 @@ def add_products(request):
                     return render(request, 'app/add_products.html', context = {"available_categories": categories, "errors": ["Błąd. Sprawdź dane i spróbuj ponownie"]})
                 
                 main_notification_choices_json = json.dumps({"choices": data.getlist('main-notify')}, indent=4)
-                
                 lowest_price_notification_choices_json = json.dumps({"choices": data.getlist('lowest_price_notifty')}, indent=4)
                 
                 new_product = Product(
@@ -144,14 +137,34 @@ def add_products(request):
     
 
 def product_edit(request, product_id):
+    if not request.user.is_authenticated:
+        return redirect("homepage")
     return render(request, 'product/product_edit.html')
 
 
 def category_edit(request, category_id):
+    if not request.user.is_authenticated:
+        return redirect("homepage")
     return render(request, 'product/category_edit.html')
 
 
 def categories_account(request):
+    if not request.user.is_authenticated:
+        return redirect("homepage")
+
+    if request.method == "POST":
+        if 'form-name' not in request.POST.keys():
+            return render(request, "account/main.html", {"errors": "Wystąpił niespodziewany błąd"})
+    
+        match request.POST['form-name']:
+            case 'add-category':
+                category_name = request.POST['category-name']
+                if Category.objects.filter(category_name=category_name, user=request.user):
+                    return render(request, 'account/main.html', {"errors": "Kategoria o wybranej nazwie już istnieje"})
+                
+                new_category = Category(category_name=category_name, user=request.user)
+                new_category.save()
+                
     categories = [
         {
             "id": category.id,
@@ -162,18 +175,49 @@ def categories_account(request):
     context = {
         "categories": categories
     }
+    print(categories)
     return render(request, 'account/categories.html', context=context)
 
+
 def products_account(request):
+    if not request.user.is_authenticated:
+        return redirect("homepage")
+    
+    short_names = {
+        'telegram': '<i title="Telegram" class="fa-brands fa-telegram"></i>',
+        'email': '<i title="E-mail" class="fa-solid fa-at">',
+        'sms': '<i title="SMS" class="fa-solid fa-comment-sms"></i>',
+        'call': '<i title="Połączenie telefoniczne" class="fa-solid fa-phone"></i>',
+    }
+    
+    products = [
+        {
+            "product_name": product.product_name,
+            "category_name": product.category.category_name,
+            "wanted_price": product.wanted_price,
+            "wanted_price_tolerance": product.wanted_price_tolerance,
+            "lowest_price_notification_time_value": product.lowest_price_notification_time_value,
+            "lowest_price_notification_time_unit": product.lowest_price_notification_time_unit,
+            "lowest_price_notification_choices": [short_names[choice] for choice in json.loads(product.lowest_price_notifications)['choices']],
+            "wanted_price_notification_choices": [short_names[choice] for choice in json.loads(product.wanted_price_notifications)['choices']],
+            "id": product.id,
+        } for product in Product.objects.filter(user=request.user)
+    ]
+    
     context = {
-        "products": Product.objects.filter(user=request.user)
+        "products": products
     }
     return render(request, 'account/products.html', context=context)
 
+
 def data_account(request):
+    if not request.user.is_authenticated:
+        return redirect("homepage")
     return render(request, 'account/data.html')
 
 def delete_account(request):
+    if not request.user.is_authenticated:
+        return redirect("homepage")
     return render(request, 'account/delete_account.html')
 
 

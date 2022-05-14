@@ -15,25 +15,38 @@
         <a href="{% url 'add_products' %}">+ Dodaj produkt</a>
     </div>
     
-      <table class="table is-bordered">
+      <table class="table is-bordered is-fullwidth">
         <tbody>
           <thead>
-            <th>Nazwa produktu</th>
-            <th>Kategoria</th>
-            <th>Pożądana cena</th>
-            <th>Tolerancja ceny</th>
-            <th>Powiadomienia o najniższej cenie - czas</th>
-            <th>Edytuj</th>
+            <th class="has-text-centered" title="Nazwa produktu">Nazwa</th>
+            <th class="has-text-centered" title="Kategoria">Kategoria</th>
+            <th class="has-text-centered" title="Liczba linków">Linki</th>
+            <th class="has-text-centered" title="Pożądana cena">Cena</th>
+            <th class="has-text-centered" title="Akceptowalny odchył (%) od ceny pożądanej">Tolerancja</th>
+            <th class="has-text-centered" title="Czas i media wysyłania powiadomień o najniższej cenie">Najniższa cena</th>
+            <th class="has-text-centered" title="Media powiadomień o założonej cenie">Powiadomienia</th>
+            <th class="has-text-centered" title="Edytuj produkt">Edytuj</th>
           </thead>
           
           {% for product in products %}
           <tr class="has-text-centered">
-            <th>{{ product.product_name }}</th>
-            <td>{{ product.category.category_name }}</td>
-            <td>{{ product.wanted_price }} PLN</td>
-            <td>{{ product.wanted_price_tolerance }} %</td>
-            <td>{{ product.lowest_price_notification_time_value }} {{ product.lowest_price_notification_time_unit}}</td>
-            <td><a href="{% url 'product_edit' product.id %}">Edytuj</a></td>
+            <th class="has-text-centered" title="Nazwa produktu">{{ product.product_name }}</th>
+            <td class="has-text-centered" title="Kategoria">{{ product.category_name }}</td>
+            <td class="has-text-centered" title="Liczba linków">0 {# TODO: #}</td>
+            <td class="has-text-centered" title="Pożądana cena">{{ product.wanted_price }} PLN</td>
+            <td class="has-text-centered" title="Akceptowalny odchył (%) od ceny pożądanej">{{ product.wanted_price_tolerance }} %</td>
+            <td class="has-text-centered" title="Czas i media wysyłania powiadomień o najniższej cenie">
+              {{ product.lowest_price_notification_time_value }}{{ product.lowest_price_notification_time_unit}}
+              {% for choice in product.lowest_price_notification_choices %}
+                {{choice|safe}}
+              {% endfor %}
+            </td>
+            <td class="has-text-centered" title="Media powiadomień o założonej cenie">
+              {% for choice in product.wanted_price_notification_choices %}
+                {{choice|safe}}
+              {% endfor %}
+            </td>
+            <td class="has-text-centered" title="Edytuj produkt"><a href="{% url 'product_edit' product.id %}">Edytuj</a></td>
           </tr>
           {% endfor %}
         </tbody>

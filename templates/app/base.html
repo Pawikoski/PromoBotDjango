@@ -70,9 +70,17 @@
               <div class="has-dropdown is-hoverable navbar-item">
                 <a href="{% url 'user_page' %}" class="button is-primary navbar-link">Moje konto</a>
               <div class="navbar-dropdown">
-                <a href="{% url 'logout' %}" class="navbar-item">
+                <a href="{% url 'products_account' %}" class="navbar-item">
+                  Produkty
+                </a>
+                <a href="{% url 'categories_account' %}" class="navbar-item">
+                  Kategorie
+                </a>
+                <hr class="navbar-divider">
+                <a href="{% url 'logout' %}" class="has-text-danger navbar-item">
                   Wyloguj
                 </a>
+
               </div>
               </div>
 
