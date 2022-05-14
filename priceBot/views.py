@@ -5,7 +5,7 @@ from .forms import NewUserForm, AuthenticationForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
-from .models import Product, Category, ProductUrls
+from .models import Product, Category, ProductUrls, Store
 
 
 # Create your views here.
@@ -59,9 +59,6 @@ def logout_request(request):
 def user_page(request):
     if not request.user.is_authenticated:
         return redirect("homepage")
-    
-
-        
 
     return render(request, 'account/main.html')
 
@@ -222,7 +219,12 @@ def delete_account(request):
 
 
 def available_stores(request):
-    return render(request, 'app/available_stores.html')
+    stores = Store.objects.all()
+    print(stores)
+    context = {
+        "stores": stores,
+    }
+    return render(request, 'app/available_stores.html', context=context)
 
 
 def about_page(request):

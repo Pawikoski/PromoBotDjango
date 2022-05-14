@@ -29,3 +29,10 @@ class Product(models.Model):
 class ProductUrls(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     urls = models.JSONField()
+    
+
+class Store(models.Model):
+    name = models.CharField(max_length=40)
+    tags = models.CharField(max_length=300)
+    url = models.URLField(unique=True)
+    photo_url = models.URLField(max_length=300)
