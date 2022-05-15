@@ -7,6 +7,9 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from .models import Product, Category, ProductUrls, Store, UserData
 import uuid
+from urllib.parse import urlparse, urlsplit, urlunsplit
+from django.core.validators import URLValidator
+from django.core.exceptions import ValidationError
 
 
 # Create your views here.
@@ -129,6 +132,8 @@ def add_products(request):
                 
                 new_product.save()
                 
+                ProductUrls(product=new_product).save()
+                
                 
         
     return render(request, 'app/add_products.html', context=context)
@@ -181,20 +186,6 @@ def products_account(request):
     if not request.user.is_authenticated:
         return redirect("homepage")
     
-    if request.method == "POST":        
-        if 'add-single-product-form' in request.POST:
-            product_id = request.POST['product-name']
-            product = Product.objects.get(id=product_id)
-            
-            if request.user == product.user:
-                current_urls = json.loads(ProductUrls.objects.get(product=product).urls)['urls']
-                new_url = request.POST['product-url']
-                # TODO: validate url
-                
-                
-                
-                
-    
     short_names = {
         'telegram': '<i title="Telegram" class="fa-brands fa-telegram"></i>',
         'email': '<i title="E-mail" class="fa-solid fa-at">',
@@ -212,6 +203,7 @@ def products_account(request):
             "lowest_price_notification_time_unit": product.lowest_price_notification_time_unit,
             "lowest_price_notification_choices": [short_names[choice] for choice in json.loads(product.lowest_price_notifications)['choices']],
             "wanted_price_notification_choices": [short_names[choice] for choice in json.loads(product.wanted_price_notifications)['choices']],
+            "urls_count": len(json.loads(ProductUrls.objects.get(product=product).urls)['urls']),
             "id": product.id,
         } for product in Product.objects.filter(user=request.user)
     ]
@@ -219,6 +211,44 @@ def products_account(request):
     context = {
         "products": products
     }
+    
+    
+    if request.method == "POST":        
+        if 'add-single-url-form' in request.POST:
+            product_id = request.POST['product-name']
+            new_url = request.POST['product-url']
+            validator = URLValidator()
+            try:
+                validator(new_url)
+            except ValidationError:
+                return HttpResponse('oj nie kolego, to nie jest prawidlowy url')
+            
+            
+            product = Product.objects.get(id=product_id)
+            if not ProductUrls.objects.filter(product=product):
+                new_obj = ProductUrls(product=product)
+                new_obj.save()
+            
+            if request.user == product.user:
+                db_urls = json.loads(ProductUrls.objects.get(product=product).urls)['urls']
+                if new_url not in db_urls:
+                    parsed_url = urlparse(new_url)
+                    domain = parsed_url.netloc
+                    stores_urls = Store.objects.values_list('url', flat=True)
+                    
+                    # TODO: validate more accurately url
+                    if f"https://{domain}/" in stores_urls or f"https://www.{domain}/" in stores_urls:
+                        db_urls.append(new_url)
+                        json_urls = json.dumps({"urls": db_urls})
+                        urls_model_obj = ProductUrls.objects.get(product=product)
+                        urls_model_obj.urls = json_urls
+                        print(urls_model_obj.urls)
+                        urls_model_obj.save()
+                    else:
+                        return HttpResponse("Ten sklep nie jest obsługiwany. JEsli cos nie pasuje to napisz maila")
+                        
+                
+    
     return render(request, 'account/products.html', context=context)
 
 

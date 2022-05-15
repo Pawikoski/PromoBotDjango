@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from phonenumber_field.modelfields import PhoneNumberField
+import json
 
 # Create your models here.
 class Category(models.Model):
@@ -28,8 +29,17 @@ class Product(models.Model):
 
 
 class ProductUrls(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product = models.OneToOneField(Product, on_delete=models.CASCADE)
     urls = models.JSONField()
+    
+    def save(self, *args, **kwargs):
+        if not self.urls:
+            self.urls = json.dumps({"urls": []})
+            super(ProductUrls, self).save(*args, **kwargs)
+        else:
+            super(ProductUrls, self).save(*args, **kwargs)
+
+        
     
 
 class Store(models.Model):

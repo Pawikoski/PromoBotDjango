@@ -98,7 +98,7 @@
                 <input class="input" name="product-url" required type="text" placeholder="Tutaj wklej adres sklepu z twoim produktem">
               </p>
               <p class="control">
-                <input type="submit" name="add-single-product-form" class="button is-primary add-url" value="Dodaj adres">
+                <input type="submit" name="add-single-url-form" class="button is-primary add-url" value="Dodaj adres">
                   
               </p>
             </div>
@@ -127,7 +127,7 @@
           <tr class="has-text-centered">
             <th class="has-text-centered" title="Nazwa produktu">{{ product.product_name }}</th>
             <td class="has-text-centered" title="Kategoria">{{ product.category_name }}</td>
-            <td class="has-text-centered" title="Liczba linków">0 
+            <td class="has-text-centered" title="Liczba linków">{{ product.urls_count }}
               
          
               <div class="dropdown is-right is-hoverable">
