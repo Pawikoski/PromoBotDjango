@@ -19,7 +19,9 @@
       product_name = trigger.dataset.product_name
 
       el.querySelector("#category").textContent = category;
+      el.querySelector("#category").value = category;
       el.querySelector("#product").textContent = product_name;
+      el.querySelector("#product").value = product_id;
       el.classList.add('is-active');
     }
   
@@ -70,35 +72,34 @@
     <a href="{% url 'add_products' %}">+ Dodaj produkt</a>
   </div>
 
-  <div id="modal-js" class="modal">
+  <div id="modal-add-single-url" class="modal">
     <div class="modal-background"></div>
-    
       <div class="modal-content" style="width:60%">
         <div class="box">
           <form method="POST">
+            {% csrf_token %}
             <div class="field has-addons">
               <p class="control is-one-third">
                 <span class="select">
-                  <select>
-                    <option id="category" disabled selected></option>
+                  <select name="product-category" >
+                    <option id="category" selected></option>
                   </select>
                 </span>
               </p>
               <p class="control is-one-third">
                 <span class="select">
-                  <select>
-                    <option id="product" disabled selected></option>
+                  <select name="product-name">
+                    <option id="product" selected></option>
                   </select>
                 </span>
               </p>
       
               <p class="control is-expanded">
-                <input class="input" type="text" placeholder="Tutaj wklej adres sklepu z twoim produktem">
+                <input class="input" name="product-url" required type="text" placeholder="Tutaj wklej adres sklepu z twoim produktem">
               </p>
               <p class="control">
-                <a class="button is-primary add-url">
-                  Dodaj adres
-                </a>
+                <input type="submit" name="add-single-product-form" class="button is-primary add-url" value="Dodaj adres">
+                  
               </p>
             </div>
           </form>
@@ -127,9 +128,29 @@
             <th class="has-text-centered" title="Nazwa produktu">{{ product.product_name }}</th>
             <td class="has-text-centered" title="Kategoria">{{ product.category_name }}</td>
             <td class="has-text-centered" title="Liczba linków">0 
-              <a class="js-modal-trigger" data-target="modal-js" data-product_id="{{ product.id }}" data-product_name="{{ product.product_name }}" data-category="{{ product.category_name }}">
-                <i class="fa-solid fa-circle-plus"></i>
-              </a>
+              
+         
+              <div class="dropdown is-right is-hoverable">
+                <a class="dropdown-trigger" aria-controls="dropdown-menu">
+                  <i class="fa-solid fa-circle-plus"></i>
+                </a>
+
+                <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                  <div class="dropdown-content">
+                    <a href="#" class="dropdown-item js-modal-trigger" data-target="modal-add-single-url" data-product_id="{{ product.id }}" data-product_name="{{ product.product_name }}" data-category="{{ product.category_name }}">
+                      Pojedynczy link
+                    </a>
+                    <a class="dropdown-item">
+                      Wiele linków
+                    </a>
+                    <a href="#" class="dropdown-item">
+                      Z pliku
+                    </a>
+                  </div>
+                </div>
+
+              </div>
+              
             </td>
             <td class="has-text-centered" title="Pożądana cena">{{ product.wanted_price }} PLN</td>
             <td class="has-text-centered" title="Akceptowalny odchył (%) od ceny pożądanej">{{ product.wanted_price_tolerance }} %</td>

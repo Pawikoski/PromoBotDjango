@@ -54,19 +54,19 @@
     </form>
 </div>
 
-  <table class="table is-bordered categories">
+  <table class="table is-bordered categories is-fullwidth">
     <tbody>
       <thead>
-        <th>Nazwa kategorii</th>
-        <th>Liczba produktów</th>
-        <th>Edytuj</th>
+        <th class="has-text-centered">Nazwa kategorii</th>
+        <th class="has-text-centered">Liczba produktów</th>
+        <th class="has-text-centered">Edytuj</th>
       </thead>
       
       {% for category in categories %}
       <tr class="has-text-centered">
-        <th>{{ category.name }}</th>
-        <td>{{ category.products_count }}</td>
-        <td><a href="{% url 'category_edit' category.id %}">Edytuj</a></td>
+        <th class="has-text-centered">{{ category.name }}</th>
+        <td class="has-text-centered">{{ category.products_count }}</td>
+        <td class="has-text-centered"><a href="{% url 'category_edit' category.id %}">Edytuj</a></td>
       </tr>
       {% endfor %}
     </tbody>

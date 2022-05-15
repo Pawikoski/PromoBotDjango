@@ -5,7 +5,8 @@ from .forms import NewUserForm, AuthenticationForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
-from .models import Product, Category, ProductUrls, Store
+from .models import Product, Category, ProductUrls, Store, UserData
+import uuid
 
 
 # Create your views here.
@@ -180,6 +181,20 @@ def products_account(request):
     if not request.user.is_authenticated:
         return redirect("homepage")
     
+    if request.method == "POST":        
+        if 'add-single-product-form' in request.POST:
+            product_id = request.POST['product-name']
+            product = Product.objects.get(id=product_id)
+            
+            if request.user == product.user:
+                current_urls = json.loads(ProductUrls.objects.get(product=product).urls)['urls']
+                new_url = request.POST['product-url']
+                # TODO: validate url
+                
+                
+                
+                
+    
     short_names = {
         'telegram': '<i title="Telegram" class="fa-brands fa-telegram"></i>',
         'email': '<i title="E-mail" class="fa-solid fa-at">',
@@ -210,7 +225,41 @@ def products_account(request):
 def data_account(request):
     if not request.user.is_authenticated:
         return redirect("homepage")
-    return render(request, 'account/data.html')
+    
+    if not UserData.objects.filter(user=request.user):
+        new_user = UserData(user=request.user)
+        new_user.save()
+    
+    def generate_api_key():
+        api_key = uuid.uuid4()
+        if UserData.objects.filter(promobot_api_key=api_key):
+            generate_api_key()
+        
+        return api_key
+    
+    user_data = UserData(user=request.user)
+    
+    if request.method == "POST":
+        if 'generate-promobot-api-key' in request.POST and not UserData.objects.get(user=request.user).promobot_api_key:
+            new_api_key = generate_api_key()
+            user_data.promobot_api_key = new_api_key
+            user_data.save()
+        if 'main-form' in request.POST:
+            # todo: retrieve and validate data from form, add / alter data in database
+            pass
+            
+    user_data = UserData.objects.get(user=request.user)
+    
+    context = {
+        'promobot_api_key': user_data.promobot_api_key,
+        'telegram_api_key': user_data.telegram_api_key,
+        'telegram_user_id': user_data.telegram_user_id,
+        'phone_number': user_data.phone_number
+    }
+    
+    # print(context)
+    
+    return render(request, 'account/data.html', context)
 
 def delete_account(request):
     if not request.user.is_authenticated:

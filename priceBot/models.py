@@ -1,5 +1,7 @@
+from tkinter import CASCADE
 from django.db import models
 from django.contrib.auth.models import User
+from phonenumber_field.modelfields import PhoneNumberField
 
 # Create your models here.
 class Category(models.Model):
@@ -36,3 +38,14 @@ class Store(models.Model):
     tags = models.CharField(max_length=300)
     url = models.URLField(unique=True)
     photo_url = models.URLField(max_length=300)
+    
+
+class UserData(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    promobot_api_key = models.UUIDField(max_length=128, blank=True, unique=True, null=True)
+    telegram_api_key = models.CharField(max_length=128, blank=True, null=True)
+    telegram_user_id = models.IntegerField(blank=True, null=True)
+    phone_number = PhoneNumberField(blank=True, null=True)
+    
+    
+    
