@@ -13,8 +13,10 @@ urlpatterns = [
     path('zglos-blad/', views.report_bug_page, name='report_bug'),
     path('sledz-produkty/', views.add_products, name='add_products'),
     
-    path('produkt/<int:product_id>', views.product_edit, name='product_edit'),
-    path('kategoria/<int:category_id>', views.category_edit, name='category_edit'),
+    path('produkt/<int:product_id>', views.product, name='product'),
+    
+    path('edytuj-produkt/<int:product_id>', views.product_edit, name='product_edit'),
+    path('edytuj-kategorie/<int:category_id>', views.category_edit, name='category_edit'),
     
     path('products-for-category/', views.products_for_category, name='products_for_category'),
     

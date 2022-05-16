@@ -246,10 +246,23 @@ def products_account(request):
                         urls_model_obj.save()
                     else:
                         return HttpResponse("Ten sklep nie jest obsługiwany. JEsli cos nie pasuje to napisz maila")
-                        
-                
+       
     
     return render(request, 'account/products.html', context=context)
+
+
+def product(request, product_id):
+    product = Product.objects.get(id=product_id)
+    if request.user != product.user:
+        return HttpResponse("to nie twoj produkt kolego")
+    
+    
+    
+    context = {
+        'product_name': product.product_name,
+    }
+    
+    return render(request, 'product/product.html', context=context)
 
 
 def data_account(request):
@@ -267,24 +280,35 @@ def data_account(request):
         
         return api_key
     
-    user_data = UserData(user=request.user)
+    user_data = UserData.objects.get(user=request.user)
     
     if request.method == "POST":
-        if 'generate-promobot-api-key' in request.POST and not UserData.objects.get(user=request.user).promobot_api_key:
+        if 'generate-promobot-api-key' in request.POST and not user_data.promobot_api_key:
             new_api_key = generate_api_key()
             user_data.promobot_api_key = new_api_key
             user_data.save()
-        if 'main-form' in request.POST:
-            # todo: retrieve and validate data from form, add / alter data in database
-            pass
+        if 'update-data' in request.POST:
+            if request.POST['telegram_api_key']:
+                user_data.telegram_api_key = request.POST['telegram_api_key']
+            if request.POST['telegram_api_uid']:
+                try:
+                    new_uid = int(request.POST['telegram_api_uid'])
+                    user_data.telegram_user_id = new_uid
+                except ValueError:
+                    # TODO: display error
+                    print("nieprawidłowy telegram id")
+                
+            if request.POST['phone_number']:
+                user_data.phone_number = '+48' + request.POST['phone_number']
             
-    user_data = UserData.objects.get(user=request.user)
+            user_data.save()
+            
     
     context = {
         'promobot_api_key': user_data.promobot_api_key,
         'telegram_api_key': user_data.telegram_api_key,
         'telegram_user_id': user_data.telegram_user_id,
-        'phone_number': user_data.phone_number
+        'phone_number': str(user_data.phone_number).replace("+48", "")
     }
     
     # print(context)
