@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['.herokuapp.com', '127.0.0.1']
 # Application definition
 
 INSTALLED_APPS = [
+    'rest_framework',
     'phonenumber_field',
     "whitenoise.runserver_nostatic",
     "django.contrib.staticfiles",
