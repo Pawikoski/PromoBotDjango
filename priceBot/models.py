@@ -1,3 +1,4 @@
+import base64
 from django.db import models
 from django.contrib.auth.models import User
 from phonenumber_field.modelfields import PhoneNumberField
@@ -50,10 +51,25 @@ class ProductUrls(models.Model):
 class UserData(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     promobot_api_key = models.UUIDField(max_length=128, blank=True, unique=True, null=True)
+    token = models.BinaryField(blank=True)
     telegram_api_key = models.CharField(max_length=128, blank=True, null=True)
     telegram_user_id = models.IntegerField(blank=True, null=True)
     phone_number = PhoneNumberField(blank=True, null=True)
     
+    def save(self, *args, **kwargs):
+        self.token = base64.b64encode(str(self.promobot_api_key).encode('ascii'))
+        super(UserData, self).save(*args, **kwargs)
+    
+
+class ProductStat(models.Model):
+    product = models.OneToOneField(Product, on_delete=models.CASCADE)
+    lowest_price = models.DecimalField(max_digits=8, decimal_places=2)
+    lowest_price_date = models.DateTimeField(auto_now=True)
+    lowest_price_store = models.ForeignKey(Store, on_delete=models.CASCADE, related_name="lowest_price_so_far_store")
+    last_check_date = models.DateTimeField(auto_now=True)
+    last_check_lowest_price = models.DecimalField(max_digits=8, decimal_places=2)
+    last_check_lowest_price_store = models.ForeignKey(Store, on_delete=models.CASCADE, related_name="lowest_price_last_check_store")
+
     
 class Version(models.Model):
     version = models.CharField(max_length=50)
