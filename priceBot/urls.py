@@ -22,6 +22,7 @@ urlpatterns = [
     path('products-for-category/', views.products_for_category, name='products_for_category'),
     
     
+    path('moje-konto/premium', views.premium, name='premium'),
     path('moje-konto/kategorie', views.categories_account, name='categories_account'),
     path('moje-konto/produkty', views.products_account, name='products_account'),
     path('moje-konto/twoje-dane', views.data_account, name='data_account'),

@@ -1,0 +1,19 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+<div class="content">
+    <h1 class="title mb-6">Premium</h1>
+    <p class="subtitle is-5">Dostęp premium gwarantuje m.in:</p>
+    <ul>
+        <li>Automatyczne rozwiązywanie captchy, gdy nastąpi taka potrzeba</li>
+        <li>Możliwość dodawania linków do <a href="{% url 'available_stores' %}?premium">sklepów oznaczonych gwiazdką</a></li>
+        <li>Odblokowane powiadomienia przez: Email, SMS, Połączenie telefoniczne</li>
+        <li></li>
+        <li>Nic więcej w sumie</li>
+    </ul>
+
+    <p class="price">Cena: {cena}zł / 30dni</p>
+
+    <button class="button is-success">Kup dostep</button>
+</div>
+{% endblock content %}

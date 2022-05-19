@@ -336,6 +336,10 @@ def download(request):
     return render(request, "app/download.html")
 
 
+def premium(request):
+    return render(request, 'account/premium.html')
+
+
 def delete_account(request):
     if not request.user.is_authenticated:
         return redirect("homepage")
