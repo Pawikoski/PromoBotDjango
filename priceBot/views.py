@@ -5,7 +5,7 @@ from .forms import NewUserForm, AuthenticationForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
-from .models import Product, Category, ProductUrls, Store, UserData
+from .models import Product, Category, ProductUrls, Store, UserData, Download
 import uuid
 from urllib.parse import urlparse, urlsplit, urlunsplit
 from django.core.validators import URLValidator
@@ -319,6 +319,22 @@ def data_account(request):
     # print(context)
     
     return render(request, 'account/data.html', context)
+
+
+def download(request):
+    # download_obj = Download.objects.first()
+    # urls = {
+    #     "windows": download_obj.windows_version.url,
+    #     "mac": download_obj.mac_version.url,
+    #     "linux": download_obj.linux_version.url,
+    # }
+    
+    # context = {
+    #     "urls": urls,
+    # }
+    
+    return render(request, "app/download.html")
+
 
 def delete_account(request):
     if not request.user.is_authenticated:

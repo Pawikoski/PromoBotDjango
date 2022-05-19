@@ -73,3 +73,9 @@ class ProductStat(models.Model):
     
 class Version(models.Model):
     version = models.CharField(max_length=50)
+    
+
+class Download(models.Model):
+    windows_version = models.FileField(upload_to='releases/')
+    linux_version = models.FileField(upload_to='releases/')
+    mac_version = models.FileField(upload_to='releases/')

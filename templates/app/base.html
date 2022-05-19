@@ -65,6 +65,7 @@
       <div class="navbar-end">
         <div class="navbar-item">
           <div class="buttons">
+            <a href="{% url 'download' %}" class="button is-white"><i class="fa-solid fa-download pr-2"></i>Pobierz</a>
 
             {% if user.is_authenticated %}
               <div class="has-dropdown is-hoverable navbar-item">

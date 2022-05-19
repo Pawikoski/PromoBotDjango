@@ -12,6 +12,7 @@ urlpatterns = [
     path('kontakt/', views.contact_page, name='contact'),
     path('zglos-blad/', views.report_bug_page, name='report_bug'),
     path('sledz-produkty/', views.add_products, name='add_products'),
+    path('pobierz/', views.download, name='download'),
     
     path('produkt/<int:product_id>', views.product, name='product'),
     

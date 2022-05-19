@@ -23,6 +23,8 @@ def version(request):
 
 
 def auth(request):
+    if 'Version' not in request.headers.keys() or request.headers['Version'] != Version.objects.first().version:
+        return JsonResponse({"error": "Invalid version"})
     # TODO: last api call > save datetime to model
     try:
         token = bytes(request.headers['Token'].encode("ascii"))
@@ -62,19 +64,30 @@ def auth(request):
 
 @csrf_exempt
 def get_data(request):
-   
-    if request.method == "POST":
-        # TODO: Catch exceptions
-        token = bytes(request.headers['Token'].encode("ascii"))
-        user = UserData.objects.get(token=token).user
-         
-        product_name = request.POST['product_name']
-        print(product_name)
-        product_obj = Product.objects.get(product_name=product_name, user=user)
-        urls = json.loads(ProductUrls.objects.get(product=product_obj).urls)['urls']
-        data = urls
+    if request.method != "POST":
+        return HttpResponseNotAllowed('none')
+    
+    if 'Version' not in request.headers.keys() or request.headers['Version'] != Version.objects.first().version:
+        return JsonResponse({"error": "Invalid version"})
         
-        return JsonResponse({"data": data})
+    # TODO: Catch exceptions
+    token = bytes(request.headers['Token'].encode("ascii"))
+    user = UserData.objects.get(token=token).user
+        
+    product_name = request.POST['product_name']
+    print(product_name)
+    product_obj = Product.objects.get(product_name=product_name, user=user)
+    urls = json.loads(ProductUrls.objects.get(product=product_obj).urls)['urls']
+    data = urls
+    
+    return JsonResponse({"data": data})
     
     
-    return HttpResponseNotAllowed('none')
+    
+
+
+def product_stats(request):
+    if request.method != "POST":
+        return HttpResponseNotAllowed('none')
+    
+    

@@ -6,4 +6,5 @@ urlpatterns = [
     path('auth/', views.auth, name='auth'),
     path('version/', views.version, name='version'),
     path('get_data/', views.get_data, name="get_data"),
+    path('product_stats', views.product_stats, name='stats')
 ]
