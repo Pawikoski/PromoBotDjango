@@ -30,6 +30,7 @@ def auth(request):
         token = bytes(request.headers['Token'].encode("ascii"))
         user_data = UserData.objects.get(token=token)
         user = user_data.user
+        # TODO: user settingslike premium, time breaks etc.
         
         user_data_dict = {
             "telegram_api_key": user_data.telegram_api_key,

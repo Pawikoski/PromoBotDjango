@@ -80,6 +80,18 @@ class UserData(models.Model):
     def save(self, *args, **kwargs):
         self.token = base64.b64encode(str(self.promobot_api_key).encode('ascii'))
         super(UserData, self).save(*args, **kwargs)
+        
+
+# class UserSettings(models.Model):
+#     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+#     premium = models.BooleanField(default=False)
+#     premium_end = models.DateTimeField(blank=True)
+#     time_break_between_requests_value = models.IntegerField()
+#     TIME_UNIT_CHOICES = (
+#         ("m", "Minutes"),
+#         ("h", "Hours")
+#     )
+#     time_break_between_requests_unit = models.CharField(choices=TIME_UNIT_CHOICES, max_length=1)
     
 
 class ProductStat(models.Model):

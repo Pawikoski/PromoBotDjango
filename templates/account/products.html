@@ -69,7 +69,7 @@
 <div class="tab my-products">
   <div class="is-flex is-justify-content-space-between">
     <h1 class="subtitle">Wszystkie produkty</h1>
-    <a href="{% url 'add_products' %}">+ Dodaj produkt</a>
+    <a href="{% url 'main:add_products' %}">+ Dodaj produkt</a>
   </div>
 
   <div id="modal-add-single-url" class="modal">
@@ -125,7 +125,7 @@
           
           {% for product in products %}
           <tr class="has-text-centered">
-            <th class="has-text-centered" title="Nazwa produktu"><a href="{% url 'product' product.id %}">{{ product.product_name }}</a></th>
+            <th class="has-text-centered" title="Nazwa produktu"><a href="{% url 'main:product' product.id %}">{{ product.product_name }}</a></th>
             <td class="has-text-centered" title="Kategoria">{{ product.category_name }}</td>
             <td class="has-text-centered" title="Liczba linków">{{ product.urls_count }}
               
@@ -169,7 +169,7 @@
                 {{choice|safe}}
               {% endfor %}
             </td>
-            <td class="has-text-centered" title="Edytuj produkt"><a href="{% url 'product_edit' product.id %}">Edytuj</a></td>
+            <td class="has-text-centered" title="Edytuj produkt"><a href="{% url 'main:product_edit' product.id %}">Edytuj</a></td>
           </tr>
           {% endfor %}
         </tbody>

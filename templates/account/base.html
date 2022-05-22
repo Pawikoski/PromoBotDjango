@@ -11,16 +11,16 @@
                 <a class="is-pulled-right"><i class="fa-solid fa-chevron-left"></i>Zwiń <!-- TODO: --></a>
             </p>
             <ul class="menu-list">
-                <li><a href="{% url 'categories_account' %}">Kategorie</a></li>
-                <li><a href="{% url 'products_account' %}">Produkty</a></li>
+                <li><a href="{% url 'main:categories_account' %}">Kategorie</a></li>
+                <li><a href="{% url 'main:products_account' %}">Produkty</a></li>
             </ul>
             <p class="menu-label">
                 Ustawienia konta
             </p>
             <ul class="menu-list">
-                <li><a href="{% url 'data_account' %}">Twoje dane</a></li>
-                <li><a href="{% url 'premium_settings' %}"><strong class="has-text-success">Premium</strong></a></li>
-                <li><a class="has-text-danger" href="{% url 'delete_account' %}"><strong>Usuń konto</strong></a></li>
+                <li><a href="{% url 'main:data_account' %}">Twoje dane</a></li>
+                <li><a href="{% url 'main:premium_settings' %}"><strong class="has-text-success">Premium</strong></a></li>
+                <li><a class="has-text-danger" href="{% url 'main:delete_account' %}"><strong>Usuń konto</strong></a></li>
             </ul>
         </aside>
     </div>

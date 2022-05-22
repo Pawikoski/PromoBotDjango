@@ -8,7 +8,7 @@
     <p class="subtitle is-5">Standard</p>
     <ul>
         <li>Pomijanie sklepu gdy wystąpi captcha</li>
-        <li>Możliwość dodawania linków tylko do <a href="{% url 'available_stores' %}?premium">sklepów bez gwiazdki</a></li>
+        <li>Możliwość dodawania linków tylko do <a href="{% url 'main:available_stores' %}?premium">sklepów bez gwiazdki</a></li>
         <li>Powiadomienia przez: Telegram</li>
         <li>Przerwa pomiędzy sprawdzaniem produktów: około 10 minut</li>
         <li>Ręczne dodawanie linków do produktów</li>
@@ -17,7 +17,7 @@
     <p class="subtitle is-5">Premium</p>
     <ul>
         <li>Automatyczne rozwiązywanie captchy, gdy nastąpi taka potrzeba</li>
-        <li>Możliwość dodawania linków do <a href="{% url 'available_stores' %}?premium">sklepów oznaczonych gwiazdką</a></li>
+        <li>Możliwość dodawania linków do <a href="{% url 'main:available_stores' %}?premium">sklepów oznaczonych gwiazdką</a></li>
         <li>Odblokowane powiadomienia przez: Email, SMS, Połączenie telefoniczne</li>
         <li>Możliwość ustalenia własnego czasu przerwy między sprawdzaniem ceny</li>
         <li>Automatyczne szukanie produktu we wszystkich sklepach</li>
