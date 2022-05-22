@@ -5,26 +5,34 @@
 
   <div class="is-flex is-justify-content-space-between">
     <h1 class="title">Obsługiwane sklepy</h1>
-    <div class="field is-grouped">
+    <div class="field">
       <div class="control">
-        <input class="input" type="text" placeholder="Szukaj...">
-      </div>
-      <div class="control">
-        <button class="input">Szukaj</button>
+        <button class="button">Filtruj</button>
       </div>
     </div>
+
+    <form action="" method="get">
+      <div class="field is-grouped">
+        <div class="control">
+          <input name="search" class="input" type="text" placeholder="Szukaj...">
+        </div>
+        <div class="control">
+          <input type="submit" class="button" value="Szukaj">
+        </div>
+      </div>
+    </form>
   </div>
 
-  <div class="columns">
-    {% for store in stores %}    
-      <div class="column is-one-fifth">
-
+  <div class="tile is-ancestor is-flex-wrap-wrap">
+    {% for store in stores %}
+    <div class="tile is-parent is-3">
         <div class="tile is-child box has-text-centered">
-          <p class="title">{{ store.name }}</p>
+          {% if store.is_premium %}<i title="Wymaga dostępu premium" class="fa-solid fa-star is-pulled-right" style="color: green;"></i>{% endif %}
+          <p class="title">{{ store.name }} </p>
           <img src="{{ store.photo_url }}" alt="{{ store.name }} photo" width="140" >
         </div>
-
       </div>
+
     {% endfor %}
   </div>
 

@@ -1,4 +1,5 @@
 import base64
+from tabnanny import verbose
 from django.db import models
 from django.contrib.auth.models import User
 from phonenumber_field.modelfields import PhoneNumberField
@@ -8,6 +9,17 @@ import json
 class Category(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     category_name = models.CharField(max_length=60)
+    
+    
+class StoreCategory(models.Model):
+    name = models.CharField(max_length=60)
+
+    def __str__(self):
+        return self.name
+    
+    class Meta:
+        verbose_name = "Store Category"
+        verbose_name_plural = "Stores Categories"
     
     
 class Product(models.Model):
@@ -31,9 +43,18 @@ class Product(models.Model):
 
 class Store(models.Model):
     name = models.CharField(max_length=40)
+    category = models.ManyToManyField(StoreCategory)
     tags = models.CharField(max_length=300)
     url = models.URLField(unique=True)
     photo_url = models.URLField(max_length=300)
+    is_premium = models.BooleanField(default=False)
+    
+    class Meta:
+        verbose_name = "Store"
+        verbose_name_plural = "Stores"
+    
+    def __str__(self):
+        return self.name
     
 
 class ProductUrls(models.Model):
