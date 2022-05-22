@@ -340,6 +340,10 @@ def premium(request):
     return render(request, 'account/premium.html')
 
 
+def premium_settings(request):
+    return render(request, 'account/premium_settings.html')
+
+
 def delete_account(request):
     if not request.user.is_authenticated:
         return redirect("homepage")

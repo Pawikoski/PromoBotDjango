@@ -15,19 +15,12 @@
                 <li><a href="{% url 'products_account' %}">Produkty</a></li>
             </ul>
             <p class="menu-label">
-                BOT - Ustawienia
-            </p>
-            <ul class="menu-list">
-                <li><a href="?ustawienia-telegram">Telegram</a></li>
-                <li><a href="?ustawienia-telefon">Telefon</a></li>
-                <li><a href="?ustawienia-inne">Inne</a></li>
-            </ul>
-            <p class="menu-label">
                 Ustawienia konta
             </p>
             <ul class="menu-list">
                 <li><a href="{% url 'data_account' %}">Twoje dane</a></li>
-                <li><a class="has-text-danger" href={% url 'delete_account' %}><strong>Usuń konto</strong></a></li>
+                <li><a href="{% url 'premium_settings' %}"><strong class="has-text-success">Premium</strong></a></li>
+                <li><a class="has-text-danger" href="{% url 'delete_account' %}"><strong>Usuń konto</strong></a></li>
             </ul>
         </aside>
     </div>

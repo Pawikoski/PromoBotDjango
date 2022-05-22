@@ -1,0 +1,20 @@
+{% extends 'account/base.html' %}
+
+{% block title %}
+    Ustawienia
+{% endblock title %}
+{% block title2 %}
+    <h1 class="title">Premium</h1>
+{% endblock title2 %}
+
+
+{% block main-column %}
+    <h2 class="subtitle">Twoje premium trwa do: <span class="has-text-danger">wczoraj</span> </h2>
+    <div class="control">
+        <div class="field">
+            <label class="label" for="time">Czas pomiędzy sprawdzaniem cen</label>
+            <input type="text" name="time" id="" class="input" placeholder="5 minut">
+        </div>
+    </div>
+    
+{% endblock main-column %}
