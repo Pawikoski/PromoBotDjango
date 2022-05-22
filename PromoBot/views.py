@@ -1,5 +1,4 @@
 from django.shortcuts import redirect, render, HttpResponse
-from ipware import get_client_ip
 
 # Create your views here.
 
@@ -16,4 +15,4 @@ def verify_ip(view):
 @verify_ip
 def index(request):
     print(request.META['REMOTE_ADDR'])
-    return HttpResponse("sadfasd")
+    return HttpResponse(request.META['REMOTE_ADDR'])
