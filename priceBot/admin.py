@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import Store, UserData, ProductUrls, Product, Version, ProductStat, StoreCategory
+import PromoBot.models as pbm
 
 # Register your models here.
 
@@ -30,3 +31,10 @@ class VersionAdmin(admin.ModelAdmin):
 
 admin.site.register(Version, VersionAdmin)
 
+admin.site.register(pbm.Store)
+admin.site.register(pbm.StoreCategory)
+
+class ProductAdmin(admin.ModelAdmin):
+    list_display = ('name', 'store', 'category', 'price', 'best_price')
+    
+admin.site.register(pbm.Product, ProductAdmin)
