@@ -24,7 +24,7 @@ def register_request(request):
             user = form.save()
             login(request, user)
             messages.success(request, "Rejstracja przebiegła pomyślnie.")
-            return redirect("homepage")
+            return redirect("main:homepage")
         messages.error(request, "Podczas rejestracji wystąpił błąd. Sprawdź podane informacje i spróbuj ponownie")
 
     form = NewUserForm()
@@ -42,7 +42,7 @@ def login_request(request):
             if user is not None:
                 login(request, user)
                 messages.info(request, f"Jesteś zalogowany, {username}!")
-                return redirect("homepage")
+                return redirect("main:homepage")
             else:
                 messages.error(request, "Nieprawidłowa nazwa użytkownika lub hasło")
         else:
@@ -54,15 +54,15 @@ def login_request(request):
 
 def logout_request(request):
     if not request.user.is_authenticated:
-        return redirect("homepage")
+        return redirect("main:homepage")
     logout(request)
     messages.info(request, "Zostałeś wylogowany")
-    return redirect('homepage')
+    return redirect('main:homepage')
 
 
 def user_page(request):
     if not request.user.is_authenticated:
-        return redirect("homepage")
+        return redirect("main:homepage")
 
     return render(request, 'account/main.html')
 
@@ -141,13 +141,13 @@ def add_products(request):
 
 def product_edit(request, product_id):
     if not request.user.is_authenticated:
-        return redirect("homepage")
+        return redirect("main:homepage")
     return render(request, 'product/product_edit.html')
 
 
 def category_edit(request, category_id):
     if not request.user.is_authenticated:
-        return redirect("homepage")
+        return redirect("main:homepage")
     return render(request, 'product/category_edit.html')
 
 
@@ -184,7 +184,7 @@ def categories_account(request):
 
 def products_account(request):
     if not request.user.is_authenticated:
-        return redirect("homepage")   
+        return redirect("main:homepage")   
 
     if request.method == "POST":        
         if 'add-single-url-form' in request.POST:
@@ -272,7 +272,7 @@ def product(request, product_id):
 
 def data_account(request):
     if not request.user.is_authenticated:
-        return redirect("homepage")
+        return redirect("main:homepage")
     
     if not UserData.objects.filter(user=request.user):
         new_user = UserData(user=request.user)
@@ -346,7 +346,7 @@ def premium_settings(request):
 
 def delete_account(request):
     if not request.user.is_authenticated:
-        return redirect("homepage")
+        return redirect("main:homepage")
     return render(request, 'account/delete_account.html')
 
 
