@@ -38,3 +38,8 @@ class ProductAdmin(admin.ModelAdmin):
     list_display = ('name', 'store', 'category', 'price', 'best_price')
     
 admin.site.register(pbm.Product, ProductAdmin)
+
+class StoreCategoryURLAdmin(admin.ModelAdmin):
+    list_display = ("category", "store", "url")
+    
+admin.site.register(pbm.StoreCategoryURL, StoreCategoryURLAdmin)
