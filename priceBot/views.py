@@ -10,6 +10,7 @@ import uuid
 from urllib.parse import urlparse, urlsplit, urlunsplit
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
+from PromoBot.models import Product as PromoBotProduct
 
 
 # Create your views here.
@@ -319,6 +320,22 @@ def data_account(request):
     # print(context)
     
     return render(request, 'account/data.html', context)
+
+
+def search(request):
+    if 'search_term' not in request.GET.keys():
+        return redirect("main:homepage")
+    
+    search_term = request.GET['search_term']
+    
+    products = PromoBotProduct.objects.filter(name__icontains=search_term)
+    
+    context = {
+        "search_term": search_term,
+        "products": products
+    }    
+    
+    return render(request, 'app/search.html', context=context)
 
 
 def download(request):

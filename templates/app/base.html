@@ -15,6 +15,7 @@
         overflow: hidden;
     }
   </style>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body class="is-dark has-background-dark is-fullheight-with-navbar" style="min-height: 100vh; height:100%">
   <nav class="navbar has-background-black-ter is-dark" role="navigation" aria-label="main navigation">
@@ -63,6 +64,18 @@
       </div>
 
       <div class="navbar-end">
+        <div class="navbar-item">
+          <form action="{% url 'main:search_product' %}" method="get">
+          <div class="field">
+            <p class="control has-icons-left">
+              <input class="input" name="search_term" type="text" placeholder="Wyszukaj produkt">
+              <span class="icon is-small is-left">
+                <i class="fa-solid fa-magnifying-glass"></i>
+              </span>
+            </p>
+          </div>
+        </form>
+        </div>
         <div class="navbar-item">
           <div class="buttons">
             <a href="{% url 'main:download' %}" class="button is-white"><i class="fa-solid fa-download pr-2"></i>Pobierz</a>

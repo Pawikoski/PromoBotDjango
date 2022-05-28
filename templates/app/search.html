@@ -1,0 +1,51 @@
+{% extends 'app/base.html' %}
+
+{% block title %}
+    Szukaj - {{ search_term }}
+{% endblock title %}
+
+{% block content %}
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bm/dt-1.12.1/datatables.min.css"/>
+ 
+<script type="text/javascript" src="https://cdn.datatables.net/v/bm/dt-1.12.1/datatables.min.js"></script>
+
+    <h1 class="title">Szukaj</h1>
+    <div class="block">
+        {% if products %}
+            <h1 class="subtitle">Wyniki wyszukiwania dla "{{ search_term }}":</h1>
+            <table class="table is-fullwidth is-bordered">
+                <thead>
+                    <tr>
+                        <th class="has-text-centered">Nazwa produktu</th>
+                        <th class="has-text-centered">Kategoria</th>
+                        <th class="has-text-centered">Cena</th>
+                        <th class="has-text-centered">Sklep</th>
+                        <th class="has-text-centered">Dostępność</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for product in products %}
+                    <tr>
+                        <th>{{ product.name }}</th>
+                        <td>{{ product.category.name }}</td>
+                        <td>{{ product.price }}</td>
+                        <td><a href="{{ product.url }}">{{ product.store }}</a></td>
+                        <td>{{ product.available }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            <script>
+                $(document).ready(function() {
+                    $('.table').DataTable();
+                })
+            </script>
+        {% else %}
+            <h1 class="subtitle">Brak wyników wyszukiwania dla "{{ search_term }}":</h1>
+        {% endif %}
+        
+    </div>
+    
+{% endblock content %}

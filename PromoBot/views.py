@@ -123,13 +123,13 @@ def update_product(request):
     
     db_product.last_price = db_price
     db_product.available = available
-    if price < db_best_price:
+    if price and db_best_price and float(price) < (db_best_price):
         return_data = {"last_best_price": db_best_price}
         db_product.best_price = price
         db_product.price = price
         db_product.best_price_date = datetime.date.today().strftime("%Y-%m-%d")
-    elif price < db_price:
-        db_product.price = price
+        
+    db_product.price = price
         
     if name != db_name:
         db_product.name = name
