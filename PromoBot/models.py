@@ -26,6 +26,9 @@ class StoreCategoryURL(models.Model):
     category = models.ForeignKey(StoreCategory, on_delete=models.CASCADE)
     url = models.URLField(max_length=255, blank=True)
     
+    class Meta:
+        unique_together = ["store", "category"]
+    
     def __str__(self):
         return f"{self.category} - {self.store}"
     

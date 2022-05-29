@@ -328,7 +328,7 @@ def search(request):
     
     search_term = request.GET['search_term']
     
-    products = PromoBotProduct.objects.filter(name__icontains=search_term)
+    products = PromoBotProduct.objects.filter(name__icontains=search_term, available=True)
     
     context = {
         "search_term": search_term,

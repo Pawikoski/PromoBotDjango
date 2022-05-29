@@ -21,7 +21,6 @@
                         <th class="has-text-centered">Kategoria</th>
                         <th class="has-text-centered">Cena</th>
                         <th class="has-text-centered">Sklep</th>
-                        <th class="has-text-centered">Dostępność</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -31,7 +30,6 @@
                         <td>{{ product.category.name }}</td>
                         <td>{{ product.price }}</td>
                         <td><a href="{{ product.url }}">{{ product.store }}</a></td>
-                        <td>{{ product.available }}</td>
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -39,7 +37,11 @@
 
             <script>
                 $(document).ready(function() {
-                    $('.table').DataTable();
+                    $('.table').DataTable(
+                        {
+                            "pageLength": 50
+                        }
+                    );
                 })
             </script>
         {% else %}

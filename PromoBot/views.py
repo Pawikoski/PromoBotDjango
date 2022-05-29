@@ -144,3 +144,10 @@ def update_product(request):
 
 def lowest_price(request):
     return
+
+
+def available_categories(request, store_id):
+    store = Store.objects.get(id=store_id)
+    used_categories = [qs.category.id for qs in StoreCategoryURL.objects.filter(store=store)]
+    
+    return JsonResponse({'used_categories': used_categories})

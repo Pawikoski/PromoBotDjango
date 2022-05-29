@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.db.models import Count
 from .models import Store, UserData, ProductUrls, Product, Version, ProductStat, StoreCategory
 import PromoBot.models as pbm
 
@@ -32,14 +33,36 @@ class VersionAdmin(admin.ModelAdmin):
 admin.site.register(Version, VersionAdmin)
 
 admin.site.register(pbm.Store)
-admin.site.register(pbm.StoreCategory)
 
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('name', 'store', 'category', 'price', 'best_price')
     
 admin.site.register(pbm.Product, ProductAdmin)
 
+
+class StoresFilter(admin.SimpleListFilter):
+    title = 'Store'
+    parameter_name = 'store'
+
+    def lookups(self, request, model_admin):
+        qs = model_admin.get_queryset(request)
+        return [(i, f"{store} ({count_store})") for i, store, count_store in qs.values_list('store__id', 'store__name').annotate(user_count=Count('store')).distinct().order_by('store__name')]
+
+    def queryset(self, request, queryset):
+        if self.value():
+            return queryset.filter(store__id=self.value())
+
+
+@admin.register(pbm.StoreCategoryURL)
 class StoreCategoryURLAdmin(admin.ModelAdmin):
-    list_display = ("category", "store", "url")
     
-admin.site.register(pbm.StoreCategoryURL, StoreCategoryURLAdmin)
+    list_display = ("category", "store", "url")
+    list_filter = (StoresFilter, 'category')
+
+
+@admin.register(pbm.StoreCategory)
+class StoreCategoryAdmin(admin.ModelAdmin):
+    list_display = ('name', 'stores')
+    
+    def stores(self, obj):
+        return f"{obj.available_stores.all().count()} / {pbm.Store.objects.all().count()}" 

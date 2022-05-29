@@ -1,0 +1,41 @@
+{% extends "admin/change_form.html" %}
+{% block after_field_sets %}{{ block.super }}
+
+{% endblock %}
+
+{% block admin_change_form_document_ready %}
+{{ block.super }}
+<script type="text/javascript">
+    let store = document.querySelector("select#id_store")
+    let category = document.querySelector("select#id_category")
+    let removed_options = []
+
+
+    let url = "{% url 'promobot:available_categories' 2137 %}"
+
+    function filter_categories(ids) {
+        removed_options = []
+        ids.forEach((id) => {
+            select = category.querySelector(`option[value='${id}']`)
+            removed_options.push(select)
+            select.remove();
+        })
+    }
+
+    store.addEventListener("change", ()=> {
+        removed_options.forEach((option) => {
+
+            category.appendChild(option);
+        })
+        if(store.value) {
+            fetch(url.replace(/2137/, store.value))
+                .then(response => response.json())
+                .then(data => filter_categories(data['used_categories']));
+        }
+        
+    })
+
+    
+
+</script>
+{% endblock %}
