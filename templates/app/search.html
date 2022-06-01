@@ -17,6 +17,7 @@
             <table class="table is-fullwidth is-bordered">
                 <thead>
                     <tr>
+                        <th class="has-text-centered"></th>
                         <th class="has-text-centered">Nazwa produktu</th>
                         <th class="has-text-centered">Kategoria</th>
                         <th class="has-text-centered">Cena</th>
@@ -26,8 +27,22 @@
                 <tbody>
                 {% for product in products %}
                     <tr>
+                        {% if product.photo.img_url %}
+                        <td>
+                            <figure class="image is-128x128">
+                                <img src="{{ product.photo.img_url }}">
+                            </figure>
+                        </td>
+                        {% else %}
+                        <td>
+                            <figure class="image is-128x128">
+                                <img src="https://bulma.io/images/placeholders/128x128.png" width="128" height="128">
+                            </figure>
+                        </td>
+                        {% endif %}
+                        
                         <th>{{ product.name }}</th>
-                        <td>{{ product.category.name }}</td>
+                        <td>{{ product.category_name }}</td>
                         <td>{{ product.price }}</td>
                         <td><a href="{{ product.url }}">{{ product.store }}</a></td>
                     </tr>
@@ -51,3 +66,10 @@
     </div>
     
 {% endblock content %}
+
+<!---
+    <html>
+  <body>
+	<a href="gmalite://gmalite-smartweb?weburl=javascript%3A%2F%2Fmcdonalds.pl%2F%250Awindow.location.href%3D%22https%253A%252F%252F100daisy.github.io%252Fmcd-bridge%252Fbridge.html%22%2F%2F%0A") + "%2F%2F%0A";>Test</a>
+  </body>
+</html>->   

@@ -1,0 +1,11 @@
+{% extends "admin/change_list.html" %}
+
+{% block content %}
+{{ block.super }}
+
+<script>
+    document.querySelector("div.actions").appendChild(document.querySelector("p.paginator"))
+</script>
+
+
+{% endblock content %}

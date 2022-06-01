@@ -11,6 +11,7 @@ from urllib.parse import urlparse, urlsplit, urlunsplit
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from PromoBot.models import Product as PromoBotProduct
+from PromoBot.models import Thumbnail
 
 
 # Create your views here.
@@ -328,7 +329,17 @@ def search(request):
     
     search_term = request.GET['search_term']
     
-    products = PromoBotProduct.objects.filter(name__icontains=search_term, available=True)
+    products = [
+        {
+         "name": product.name,
+         "category_name": product.category.name,
+         "price": product.price,
+         "url": product.url,
+         "store": product.store,
+         "photo": Thumbnail.objects.get(product=product)
+         }
+        for product in PromoBotProduct.objects.filter(name__icontains=search_term, available=True)
+        ]
     
     context = {
         "search_term": search_term,

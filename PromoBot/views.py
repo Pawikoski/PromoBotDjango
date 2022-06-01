@@ -1,11 +1,13 @@
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.shortcuts import redirect, render, HttpResponse
-from PromoBot.models import Store, StoreCategory, Product, StoreCategoryURL
+from PromoBot.models import Store, StoreCategory, Product, StoreCategoryURL, Thumbnail
 import json
 import datetime
 import os
 from django.core.exceptions import ObjectDoesNotExist
+
+from priceBot.models import Category
 
 
 
@@ -34,6 +36,45 @@ def index(request):
     
     print(os.environ)
     return HttpResponse('sdf')
+
+@verify_ip
+def get_stores(request):
+    stores =  [(store.id, store.name, store.url) for store in Store.objects.all()]
+    
+    return JsonResponse({"stores": stores})
+
+
+def get_categories(request, store_id):
+    store_obj = Store.objects.get(id=store_id)
+    categories = [(category.id, category.name) for category in StoreCategory.objects.filter(available_stores=store_obj)]
+    
+    return JsonResponse({"categories": categories})
+    
+
+def get_category_url_and_products(request, store_id, category_id):
+    products_data = dict()
+    
+    store_obj = Store.objects.get(id=store_id)
+    category_obj = StoreCategory.objects.get(id=category_id)
+    
+    category_url = StoreCategoryURL.objects.get(store=store_obj, category=category_obj).url
+    
+    products = Product.objects.filter(store=store_obj, category=category_obj)
+    products_data[store_obj.name] = {}
+    
+    for product in products:
+        products_data[store_obj.name].update({
+            product.url: {
+                "name": product.name,
+                "price": product.price,
+                "last_price": product.last_price,
+                "best_price": product.best_price,
+                "best_price_date": product.best_price_date,
+                }
+            })
+    
+    return JsonResponse({"url": category_url, "products": products_data})
+    
 
 @verify_ip
 def get_data(request):
@@ -100,6 +141,7 @@ def add_products(request):
             best_price_date = datetime.date.today().strftime("%Y-%m-%d")
         )
         new_product.save()
+        Thumbnail(product=new_product, img_url=product['img']).save()
     
     
     return JsonResponse({"szef": data})

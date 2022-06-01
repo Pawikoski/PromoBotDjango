@@ -63,3 +63,8 @@ class Product(models.Model):
     def __str__(self):
         return self.name
     
+
+class Thumbnail(models.Model):
+    product = models.OneToOneField(Product, primary_key=True, on_delete=models.CASCADE)
+    img_url = models.URLField(max_length=256, null=True)
+    

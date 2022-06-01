@@ -1,3 +1,4 @@
+from unicodedata import category
 from django.contrib import admin
 from django.db.models import Count
 from .models import Store, UserData, ProductUrls, Product, Version, ProductStat, StoreCategory
@@ -34,11 +35,6 @@ admin.site.register(Version, VersionAdmin)
 
 admin.site.register(pbm.Store)
 
-class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name', 'store', 'category', 'price', 'best_price')
-    
-admin.site.register(pbm.Product, ProductAdmin)
-
 
 class StoresFilter(admin.SimpleListFilter):
     title = 'Store'
@@ -51,6 +47,30 @@ class StoresFilter(admin.SimpleListFilter):
     def queryset(self, request, queryset):
         if self.value():
             return queryset.filter(store__id=self.value())
+
+
+class CategoryFilter(admin.SimpleListFilter):
+    title = "Category"
+    parameter_name = 'category'
+    
+    def lookups(self, request, model_admin):
+        qs = model_admin.get_queryset(request)
+        if 'store' in request.GET.keys():
+            store_id = request.GET['store']
+            qs = model_admin.get_queryset(request).filter(store__id=store_id)
+            
+        return [(i, f"{category} ({count_category})") for i, category, count_category in qs.values_list('category__id', 'category__name').annotate(user_count=Count('category')).distinct().order_by('category__name')]
+
+    def queryset(self, request, queryset):
+        if self.value():
+            return queryset.filter(category__id=self.value())
+
+
+@admin.register(pbm.Product)
+class ProductAdmin(admin.ModelAdmin):
+    list_display = ('name', 'store', 'category', 'price', 'best_price')
+    list_filter = (StoresFilter, CategoryFilter)
+
 
 
 @admin.register(pbm.StoreCategoryURL)
@@ -66,3 +86,10 @@ class StoreCategoryAdmin(admin.ModelAdmin):
     
     def stores(self, obj):
         return f"{obj.available_stores.all().count()} / {pbm.Store.objects.all().count()}" 
+
+
+@admin.register(pbm.Thumbnail)
+class ThumbnailAdmin(admin.ModelAdmin):
+    list_display = ('product', 'store')
+    def store(self, obj):
+        return obj.product.store.name
