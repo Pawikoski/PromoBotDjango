@@ -55,101 +55,42 @@
     <h1 class="title">Gorące okazje</h1>
     <div class="products is-flex is-flex-direction-column">
       <!-- CARD START-->
+      {% for promo in promos %}
       <div class="card m-2">
-          <div class="card-content">
-            <div class="media">
-              <div class="media-left">
-                <figure class="image is-128x128">
-                  <img src="https://bulma.io/images/placeholders/128x128.png" alt="Placeholder image">
-                </figure>
-              </div>
-
-                <div class="media-content">
-                  <p class="title is-3"><a href="">Nazwa produktu</a></p>
-                  <p class="subtitle is-6">[opis jakis ale skad w sumie]</p>
-
-                  <time datetime="1970-1-1">21:37 | 1. Stycznia 1970</time>
-                </div>
-
-                <div class="media-right">
-                  <div class="rating">
-                    <i class="fa-solid fa-circle-plus" style="color: darkorange"></i>
-                    2137
-                    <i class="fa-solid fa-circle-minus" style="color: deepskyblue"></i>
-                  </div>
-                  <div class="comments has-text-right">
-                    <i class="fa-solid fa-comments"></i> 0
-                  </div>
-                </div>
-
+        <div class="card-content">
+          <div class="media">
+            <div class="media-left">
+              <figure class="image is-128x128">
+                <img src="https://bulma.io/images/placeholders/128x128.png" alt="Placeholder image">
+              </figure>
             </div>
 
+              <div class="media-content">
+                <p class="title is-3"><a href="">Nazwa produktu</a></p>
+                <p class="subtitle is-6">[opis jakis ale skad w sumie]</p>
+
+                <time datetime="1970-1-1">21:37 | 1. Stycznia 1970</time>
+              </div>
+
+              <div class="media-right">
+                <div class="rating">
+                  <i class="fa-solid fa-circle-plus" style="color: darkorange"></i>
+                  2137
+                  <i class="fa-solid fa-circle-minus" style="color: deepskyblue"></i>
+                </div>
+                <div class="comments has-text-right">
+                  <i class="fa-solid fa-comments"></i> 0
+                </div>
+              </div>
+
           </div>
+
         </div>
+      </div>
+      {% endfor %}
+      
       <!-- CARD END -->
 
-      <div class="card m-2">
-          <div class="card-content">
-            <div class="media">
-              <div class="media-left">
-                <figure class="image is-128x128">
-                  <img src="https://bulma.io/images/placeholders/128x128.png" alt="Placeholder image">
-                </figure>
-              </div>
-
-                <div class="media-content">
-                  <p class="title is-3"><a href="">Nazwa produktu</a></p>
-                  <p class="subtitle is-6">[opis jakis ale skad w sumie]</p>
-
-                  <time datetime="1970-1-1">21:37 | 1. Stycznia 1970</time>
-                </div>
-
-                <div class="media-right">
-                  <div class="rating">
-                    <i class="fa-solid fa-circle-plus" style="color: darkorange"></i>
-                    2137
-                    <i class="fa-solid fa-circle-minus" style="color: deepskyblue"></i>
-                  </div>
-                  <div class="comments has-text-right">
-                    <i class="fa-solid fa-comments"></i> 0
-                  </div>
-                </div>
-
-            </div>
-
-          </div>
-        </div>
-      <div class="card m-2">
-          <div class="card-content">
-            <div class="media">
-              <div class="media-left">
-                <figure class="image is-128x128">
-                  <img src="https://bulma.io/images/placeholders/128x128.png" alt="Placeholder image">
-                </figure>
-              </div>
-
-                <div class="media-content">
-                  <p class="title is-3"><a href="">Nazwa produktu</a></p>
-                  <p class="subtitle is-6">[opis jakis ale skad w sumie]</p>
-
-                  <time datetime="1970-1-1">21:37 | 1. Stycznia 1970</time>
-                </div>
-
-                <div class="media-right">
-                  <div class="rating">
-                    <i class="fa-solid fa-circle-plus" style="color: darkorange"></i>
-                    2137
-                    <i class="fa-solid fa-circle-minus" style="color: deepskyblue"></i>
-                  </div>
-                  <div class="comments has-text-right">
-                    <i class="fa-solid fa-comments"></i> 0
-                  </div>
-                </div>
-
-            </div>
-
-          </div>
-        </div>
     </div>
 
   </div>
@@ -158,101 +99,39 @@
     <h1 class="title">Najnowsze okazje</h1>
     <div class="products is-flex is-flex-direction-column">
       <!-- CARD START-->
+      {% for product in products %}
       <div class="card m-2">
-          <div class="card-content">
-            <div class="media">
-              <div class="media-left">
-                <figure class="image is-128x128">
-                  <img src="https://bulma.io/images/placeholders/128x128.png" alt="Placeholder image">
-                </figure>
-              </div>
-
-                <div class="media-content">
-                  <p class="title is-3"><a href="">Nazwa produktu</a></p>
-                  <p class="subtitle is-6">[opis jakis ale skad w sumie]</p>
-
-                  <time datetime="1970-1-1">21:37 | 1. Stycznia 1970</time>
-                </div>
-
-                <div class="media-right">
-                  <div class="rating">
-                    <i class="fa-solid fa-circle-plus" style="color: darkorange"></i>
-                    2137
-                    <i class="fa-solid fa-circle-minus" style="color: deepskyblue"></i>
-                  </div>
-                  <div class="comments has-text-right">
-                    <i class="fa-solid fa-comments"></i> 0
-                  </div>
-                </div>
-
+        <div class="card-content">
+          <div class="media">
+            <div class="media-left">
+              <figure class="image is-128x128">
+                <img src="{{ product.thumbnail.img_url }}" alt="Placeholder image">
+              </figure>
             </div>
 
-          </div>
-        </div>
-      <!-- CARD END -->
+              <div class="media-content">
+                <p class="title is-3"><a href="">{{ product.name }}</a></p>
+                <p class="subtitle is-6">[opis jakis ale skad w sumie]</p>
 
-      <div class="card m-2">
-          <div class="card-content">
-            <div class="media">
-              <div class="media-left">
-                <figure class="image is-128x128">
-                  <img src="https://bulma.io/images/placeholders/128x128.png" alt="Placeholder image">
-                </figure>
+                <time datetime="1970-1-1">21:37 | 1. Stycznia 1970</time>
               </div>
 
-                <div class="media-content">
-                  <p class="title is-3"><a href="">Nazwa produktu</a></p>
-                  <p class="subtitle is-6">[opis jakis ale skad w sumie]</p>
-
-                  <time datetime="1970-1-1">21:37 | 1. Stycznia 1970</time>
+              <div class="media-right">
+                <div class="rating">
+                  <i class="fa-solid fa-circle-plus" style="color: darkorange"></i>
+                  2137
+                  <i class="fa-solid fa-circle-minus" style="color: deepskyblue"></i>
                 </div>
-
-                <div class="media-right">
-                  <div class="rating">
-                    <i class="fa-solid fa-circle-plus" style="color: darkorange"></i>
-                    2137
-                    <i class="fa-solid fa-circle-minus" style="color: deepskyblue"></i>
-                  </div>
-                  <div class="comments has-text-right">
-                    <i class="fa-solid fa-comments"></i> 0
-                  </div>
+                <div class="comments has-text-right">
+                  <i class="fa-solid fa-comments"></i> 0
                 </div>
-
-            </div>
-
-          </div>
-        </div>
-      <div class="card m-2">
-          <div class="card-content">
-            <div class="media">
-              <div class="media-left">
-                <figure class="image is-128x128">
-                  <img src="https://bulma.io/images/placeholders/128x128.png" alt="Placeholder image">
-                </figure>
               </div>
 
-                <div class="media-content">
-                  <p class="title is-3"><a href="">Nazwa produktu</a></p>
-                  <p class="subtitle is-6">[opis jakis ale skad w sumie]</p>
-
-                  <time datetime="1970-1-1">21:37 | 1. Stycznia 1970</time>
-                </div>
-
-                <div class="media-right">
-                  <div class="rating">
-                    <i class="fa-solid fa-circle-plus" style="color: darkorange"></i>
-                    2137
-                    <i class="fa-solid fa-circle-minus" style="color: deepskyblue"></i>
-                  </div>
-                  <div class="comments has-text-right">
-                    <i class="fa-solid fa-comments"></i> 0
-                  </div>
-                </div>
-
-            </div>
-
           </div>
+
         </div>
+      </div>
+      {% endfor %}
     </div>
 
   </div>

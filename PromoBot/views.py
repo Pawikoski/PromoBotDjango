@@ -1,7 +1,7 @@
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.shortcuts import redirect, render, HttpResponse
-from PromoBot.models import Store, StoreCategory, Product, StoreCategoryURL, Thumbnail
+from PromoBot.models import Store, StoreCategory, Product, StoreCategoryURL, Thumbnail, Promo
 import json
 import datetime
 import os
@@ -193,3 +193,44 @@ def available_categories(request, store_id):
     used_categories = [qs.category.id for qs in StoreCategoryURL.objects.filter(store=store)]
     
     return JsonResponse({'used_categories': used_categories})
+
+
+def search_best_price(request):
+    data = json.loads(request.body)
+    product_name = data['product_name']
+    # store_name = data['store_name']
+    category_name = data['category_name']
+    
+    # store = Store.objects.get(name__iexact=store_name)
+    category = StoreCategory.objects.get(name__iexact=category_name)
+    
+    product = Product.objects.filter(name__icontains=product_name, category=category).order_by('price', 'name').exclude(price__isnull=True).first()
+    
+    #TODO: sort this and get the lowest price!
+    
+    lowest = product.price
+    print(product.url)
+    
+    return JsonResponse({
+        "lowest_price": lowest
+    })
+    
+
+@csrf_exempt
+def add_product_to_promo(request):
+    data = json.loads(request.body)
+    
+    url = data['url']
+    store_name = data['store_name']
+    category_name = data['category_name']
+    
+    store = Store.objects.get(name=store_name)
+    category = StoreCategory.objects.get(name=category_name)
+    product = Product.objects.get(url=url, store=store, category=category)
+    
+    promo = Promo(product=product)
+    promo.save()
+    
+    return JsonResponse({"success": True})    
+
+    

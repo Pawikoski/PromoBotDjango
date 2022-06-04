@@ -11,12 +11,19 @@ from urllib.parse import urlparse, urlsplit, urlunsplit
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from PromoBot.models import Product as PromoBotProduct
-from PromoBot.models import Thumbnail
+from PromoBot.models import Thumbnail, Promo
 
 
 # Create your views here.
 def homepage(request):
-    return render(request, 'app/homepage.html')
+    promos = Promo.objects.all()
+    products = [{
+        "name": promo.product.name,
+        "url": promo.product.url,
+        "thumbnail": Thumbnail.objects.get(product=promo.product)
+        } for promo in promos]
+    
+    return render(request, 'app/homepage.html', context={"products": products})
 
 
 def register_request(request):

@@ -1,4 +1,6 @@
+from tkinter import CASCADE
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here
 class Store(models.Model):
@@ -67,4 +69,18 @@ class Product(models.Model):
 class Thumbnail(models.Model):
     product = models.OneToOneField(Product, primary_key=True, on_delete=models.CASCADE)
     img_url = models.URLField(max_length=256, null=True)
+    
+
+class Promo(models.Model):
+    product = models.OneToOneField(Product, on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)
+    certain = models.BooleanField(default=True)
+    
+
+class PromoComment(models.Model):
+    promo = models.ForeignKey(Promo, on_delete=models.CASCADE)
+    comment = models.TextField(max_length=1000)
+    author = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+    created = models.DateTimeField(auto_now_add=True)
+    edited = models.DateTimeField(auto_now=True)
     
