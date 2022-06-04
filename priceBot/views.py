@@ -20,7 +20,9 @@ def homepage(request):
     products = [{
         "name": promo.product.name,
         "url": promo.product.url,
-        "thumbnail": Thumbnail.objects.get(product=promo.product)
+        "thumbnail": Thumbnail.objects.get(product=promo.product),
+        "store_name": promo.product.store.name,
+        "category_name": promo.product.category.name,
         } for promo in promos]
     
     return render(request, 'app/homepage.html', context={"products": products})
