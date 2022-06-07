@@ -96,11 +96,17 @@ class ThumbnailAdmin(admin.ModelAdmin):
 
 @admin.register(pbm.Promo)
 class PromoAdmin(admin.ModelAdmin):
-    list_display = ('product_name', 'price', 'certain')
+    list_display = ('product_name', 'store', 'price', 'certain')
     readonly_fields = ('product', )
     
     def product_name(self, obj):
         return f"{obj.product.name}"
     
+    def store(self, obj):
+        return f"{obj.product.store.name}"
+    
     def price(self, obj):
         return f"{obj.product.price}"
+    
+
+admin.site.register(pbm.Like)

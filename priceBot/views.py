@@ -16,6 +16,8 @@ from PromoBot.models import Thumbnail, Promo
 
 # Create your views here.
 def homepage(request):
+    user = request.user
+    
     promos = Promo.objects.all()
     products = [{
         "name": promo.product.name,
@@ -23,7 +25,9 @@ def homepage(request):
         "thumbnail": Thumbnail.objects.get(product=promo.product),
         "store_name": promo.product.store.name,
         "category_name": promo.product.category.name,
-        } for promo in promos]
+        "last_price": promo.product.last_price,
+        "price": promo.product.price,
+        } for promo in promos[::-1]]
     
     return render(request, 'app/homepage.html', context={"products": products})
 
