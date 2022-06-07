@@ -16,6 +16,7 @@
     }
   </style>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.8.2/dist/lazyload.min.js"></script>
 </head>
 <body class="is-dark has-background-dark is-fullheight-with-navbar" style="min-height: 100vh; height:100%">
   <nav class="navbar has-background-black-ter is-dark" role="navigation" aria-label="main navigation">
@@ -137,14 +138,17 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-  (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
-    const $notification = $delete.parentNode;
+    (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+      const $notification = $delete.parentNode;
 
-    $delete.addEventListener('click', () => {
-      $notification.parentNode.removeChild($notification);
+      $delete.addEventListener('click', () => {
+          $notification.parentNode.removeChild($notification);
+        });
+      });
+      var lazyLoadInstance = new LazyLoad();      
     });
-  });
-});
+
+  
   </script>
 
 </body>
