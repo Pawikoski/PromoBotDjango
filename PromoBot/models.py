@@ -74,6 +74,11 @@ class Promo(models.Model):
     product = models.OneToOneField(Product, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
     certain = models.BooleanField(default=True)
+    liked = models.ManyToManyField(User, default=None, blank=True)
+    
+    @property
+    def num_likes(self):
+        return self.liked.all().count()
     
 
 class PromoComment(models.Model):
@@ -83,3 +88,17 @@ class PromoComment(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     edited = models.DateTimeField(auto_now=True)
     
+
+LIKE_CHOICES = (
+    ('Like', 'Like'),
+    ('Dislike', 'Dislike')
+)
+
+class Like(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    promo = models.ForeignKey(Promo, on_delete=models.CASCADE)
+    
+    value = models.CharField(choices=LIKE_CHOICES, default='Like', max_length=10)
+    
+    def __str__(self):
+        return str(self.promo)
