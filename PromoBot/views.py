@@ -223,12 +223,13 @@ def add_product_to_promo(request):
     url = data['url']
     store_name = data['store_name']
     category_name = data['category_name']
+    certain = data['certain']
     
     store = Store.objects.get(name=store_name)
     category = StoreCategory.objects.get(name=category_name)
     product = Product.objects.get(url=url, store=store, category=category)
     
-    promo = Promo(product=product)
+    promo = Promo(product=product, certain=certain)
     promo.save()
     
     return JsonResponse({"success": True})    
