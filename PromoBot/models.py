@@ -12,7 +12,7 @@ class Store(models.Model):
 
 class StoreCategory(models.Model):
     name = models.CharField(max_length=60)
-    available_stores = models.ManyToManyField(Store)
+    available_stores = models.ManyToManyField(Store, blank=True)
     
     class Meta:
         verbose_name = "Store category"
