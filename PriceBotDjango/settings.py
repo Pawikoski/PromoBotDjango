@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-o*)s6se32-&$gvbmkrf3z(ojj^pdv9e$bmq=z^dq=l=$u+s=i*
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG") == 'True'
 
-ALLOWED_HOSTS = ['.herokuapp.com', '127.0.0.1', '*.promoboss.pl']
+ALLOWED_HOSTS = ['.herokuapp.com', '127.0.0.1', 'www.promoboss.pl']
 
 
 # Application definition
