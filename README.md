@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <div id="top"></div>
 <!--
 *** Thanks for checking out the Best-README-Template. If you have a suggestion
@@ -228,3 +229,9 @@ Project Link: [https://github.com/github_username/repo_name](https://github.com/
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/linkedin_username
 [product-screenshot]: images/screenshot.png
+=======
+# PromoBotDjango
+Aplikacja internetowa a la pepper.pl z okazjami z różnych sklepów. Okazje są wyszukiwane automatycznie przez [PromoBot](PromoBot repo).
+
+Aplikacja jest dostępna w internecie [pod tym adresem](https://promo-price-bot.herokuapp.com/)
+>>>>>>> 5d8b0c03c653fecad78dd0a289e5d277e0033f27
