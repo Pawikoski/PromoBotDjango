@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+import datetime
 
 # Create your models here
 class Store(models.Model):
@@ -11,7 +12,7 @@ class Store(models.Model):
 
 
 class StoreCategory(models.Model):
-    name = models.CharField(max_length=60)
+    name = models.CharField(max_length=60, unique=True)
     available_stores = models.ManyToManyField(Store, blank=True)
     
     class Meta:
@@ -49,7 +50,7 @@ class Product(models.Model):
     name = models.CharField(max_length=255)
     store = models.ForeignKey(Store, on_delete=models.CASCADE)
     category = models.ForeignKey(StoreCategory, on_delete=models.SET_NULL, null=True)
-    url = models.URLField(max_length=256)
+    url = models.URLField(max_length=256, unique=True)
     price = models.DecimalField(max_digits=10, decimal_places=2, null=True)
     last_price = models.DecimalField(max_digits=10, decimal_places=2, null=True)
     best_price = models.DecimalField(max_digits=10, decimal_places=2, null=True)
@@ -64,10 +65,18 @@ class Product(models.Model):
     def __str__(self):
         return self.name
     
+    def save(self, *args, **kwargs):
+        if not self.last_price and not self.best_price:
+            self.last_price = self.price
+            self.best_price = self.price
+            self.best_price_date = datetime.date.today().strftime("%Y-%m-%d")
+            
+        super(Product, self).save(*args, **kwargs)
+    
 
 class Thumbnail(models.Model):
     product = models.OneToOneField(Product, primary_key=True, on_delete=models.CASCADE)
-    img_url = models.URLField(max_length=256, null=True)
+    img_url = models.URLField(max_length=512, null=True)
     
 
 class Promo(models.Model):

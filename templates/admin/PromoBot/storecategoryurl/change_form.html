@@ -6,14 +6,27 @@
 {% block admin_change_form_document_ready %}
 {{ block.super }}
 <script type="text/javascript">
+    if(document.URL.includes("/add")) {
     let store = document.querySelector("select#id_store")
     let category = document.querySelector("select#id_category")
     let removed_options = []
+
+    window.onload = (event) => {
+        const getCookieValue = (name) => (
+            document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)')?.pop() || ''
+            )
+
+        if(getCookieValue("store")) {
+            store_value = getCookieValue("store")
+            store.value = store_value
+        }
+    }
 
 
     let url = "{% url 'promobot:available_categories' 2137 %}"
 
     function filter_categories(ids) {
+        console.log("sadf")
         removed_options = []
         ids.forEach((id) => {
             select = category.querySelector(`option[value='${id}']`)
@@ -22,19 +35,25 @@
         })
     }
 
-    store.addEventListener("change", ()=> {
+    function changer() {
         removed_options.forEach((option) => {
-
             category.appendChild(option);
         })
-        if(store.value) {
+        if (store.value) {
+            document.cookie = "store=" + store.value;
             fetch(url.replace(/2137/, store.value))
                 .then(response => response.json())
                 .then(data => filter_categories(data['used_categories']));
+        } else {
+            setTimeout(() => {return changer()}, 500)
         }
-        
-    })
+    }
 
+    document.addEventListener("DOMContentLoaded", changer)
+
+    store.addEventListener("change", changer)
+
+}
     
 
 </script>
